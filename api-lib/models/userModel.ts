@@ -2,7 +2,7 @@ import mongoose, { mongo } from "mongoose";
 
 
 // userType = admin writer student
-interface UserDocument {
+export interface UserDocument {
   userType: string,
   firstName: string,
   lastName: string,
@@ -12,7 +12,7 @@ interface UserDocument {
   studentId?: string
 }
 
-interface UserMongooseDocument extends UserDocument, mongoose.Document {
+export interface UserMongooseDocument extends UserDocument, mongoose.Document {
   createdAt: Date,
   updatedAt: Date
 }
@@ -49,3 +49,5 @@ const userSchema = new mongoose.Schema({
 )
 
 const UserModel = mongoose.models?.User || mongoose.model<UserMongooseDocument>("User", userSchema);
+
+export { UserModel };

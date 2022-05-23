@@ -1,0 +1,34 @@
+import { 
+  NextApiRequest,
+  NextApiResponse
+} from "next";
+import { NextHandler } from "next-connect";
+import { 
+  writerCreateSchema,
+  studentCreateSchema } from "../schemas/user.schema";
+import { UserDocument } from "../models/userModel";
+
+
+export const validateUserType = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  next: NextHandler
+) => {
+
+  try {
+    const requestBody: UserDocument = { ...req.body };
+    const options = { abortEarly: false };
+
+    if ( requestBody.userType === "writer" ) {
+      await writerCreateSchema.validate({ body: requestBody }, options);
+    }
+
+    else if ( requestBody.userType === "student" ) {
+      await studentCreateSchema.validate({ body: requestBody }, options);
+    }
+
+    return next();
+  } catch( err ) {
+    
+  }
+}
