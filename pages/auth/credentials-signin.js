@@ -1,5 +1,6 @@
 import { getCsrfToken } from "next-auth/react"
 
+
 export default function SignIn({ csrfToken }) {
 
   const formSubmit = async event => {
@@ -29,6 +30,7 @@ export default function SignIn({ csrfToken }) {
 }
 
 export async function getServerSideProps(context) {
+
   return {
     props: {
       csrfToken: await getCsrfToken(context),
