@@ -9,12 +9,20 @@ const payload = {
   password: yup.string().min(8, "Password length invalid").max(20, "Password length invalid")
 }
 
-export const accountCreateSchema = yup.object({ ...payload });
+export const userCreateSchema = yup.object({
+  body: yup.object({
+    ...payload
+  })
+});
 
 export const writerCreateSchema = yup.object({
-  writerId: yup.string().required("Writer Id is required")
+  body: yup.object({
+    writerId: yup.string().required("Writer Id is required")
+  })
 })
 
 export const studentCreateSchema = yup.object({
-  studentId: yup.string().required("Student Id is required")
+  body: yup.object({
+    studentId: yup.string().required("Student Id is required")
+  })
 })

@@ -7,6 +7,7 @@ import {
   writerCreateSchema,
   studentCreateSchema } from "../schemas/user.schema";
 import { UserDocument } from "../models/userModel";
+import { validateError } from "../utils/errors";
 
 
 export const validateUserType = async (
@@ -28,7 +29,7 @@ export const validateUserType = async (
     }
 
     return next();
-  } catch( err ) {
-    
+  } catch( error ) {
+    return validateError(error, 400, res);
   }
 }

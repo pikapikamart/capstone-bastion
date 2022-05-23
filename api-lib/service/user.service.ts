@@ -1,6 +1,5 @@
-
-
 import { 
+  DocumentDefinition,
   FilterQuery,
   QueryOptions } from "mongoose";
 import { 
@@ -13,4 +12,10 @@ export const findUser = async(
   options: QueryOptions = { lean: true }
 ) => (
   UserModel.findOne(query, options)
+)
+
+export const createUser = async(
+  userInfo: DocumentDefinition<UserDocument>
+) => (
+  UserModel.create(userInfo)
 )

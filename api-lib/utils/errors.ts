@@ -8,7 +8,7 @@ type ClientError = {
   error: string | string[]
 }
 
-export const ClientError = ( 
+export const clientError = ( 
   res: NextApiResponse,
   status: number,
   message: string | string[] = ""
@@ -43,14 +43,14 @@ export const validateError = (
   res: NextApiResponse
 ) => {
   if ( error instanceof ValidationError ) {
-    return ClientError(res, httpStatus, error.errors)
+    return clientError(res, httpStatus, error.errors)
   }
 
   if ( error instanceof Error ) {
-    return ClientError(res, httpStatus, error.message);
+    return clientError(res, httpStatus, error.message);
   }
 
   else {
-    return ClientError(res, 500)
+    return clientError(res, 500)
   }
 }

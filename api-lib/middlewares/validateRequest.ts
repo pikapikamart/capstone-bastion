@@ -3,11 +3,7 @@ import {
   NextApiResponse } from "next";
 import { NextHandler } from "next-connect";
 import { AnySchema } from "yup";
-import { 
-  accountCreateSchema,
-  writerCreateSchema,
-  studentCreateSchema } from "../schemas/user.schema";
-import { UserDocument } from "../models/userModel";
+import { validateError } from "../utils/errors";
 
 
 export const validateRequest = ( schema: AnySchema ) => async (
@@ -19,8 +15,8 @@ export const validateRequest = ( schema: AnySchema ) => async (
     const options = { abortEarly: false };
     await schema.validate({ body: req.body }, options);
 
-    return next;
+    return next();
   } catch( error ) {
-    
+    return validateError(error, 400, res);
   }
 }
