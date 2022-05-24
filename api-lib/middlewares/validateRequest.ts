@@ -12,11 +12,13 @@ export const validateRequest = ( schema: AnySchema ) => async (
   next: NextHandler
 )  =>{
   try { 
-    const options = { abortEarly: false };
-    await schema.validate({ body: req.body }, options);
 
+    const options = { abortEarly: false };
+    await schema.validate({ body: JSON.parse(req.body) }, options);
+    
     return next();
   } catch( error ) {
+    console.log(error);
     return validateError(error, 400, res);
   }
 }

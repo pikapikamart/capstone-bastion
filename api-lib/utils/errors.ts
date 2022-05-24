@@ -24,6 +24,10 @@ export const clientError = (
       error.title = "Bad request.";
       error.error = message?? "Make sure to enter proper data.";
       break;
+    case 404:
+      error.title = "Not found.";
+      error.error = message?? "Request data not found.";
+      break;
     case 409:
       error.title = "Conflict.";
       error.error = message;

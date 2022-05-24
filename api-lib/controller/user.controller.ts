@@ -36,3 +36,27 @@ export const createUserHandler = async(
     return validateError(error, 400, res);
   }
 }
+
+export const findUserHandler = async(
+  req: NextApiRequest,
+  res: NextApiResponse
+) =>{
+  const userBody: Partial<UserDocument> = { ...JSON.parse(req.body) };
+  
+  try {
+    const checkUserExistence = await findUser({
+      userType: userBody.userType,
+      email: userBody.email,
+      password: userBody.password
+    })
+
+    if ( !checkUserExistence ) {
+      return clientError(res, 404, "User account not found.")
+    }
+
+    return clientSuccess(res, 200, "User validation success.");
+  } catch( error ) {
+    console.log("controller error");
+    return validateError(error, 400, res);
+  }
+}

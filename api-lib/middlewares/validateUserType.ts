@@ -17,7 +17,7 @@ export const validateUserType = async (
 ) => {
 
   try {
-    const requestBody: UserDocument = { ...req.body };
+    const requestBody: UserDocument = { ...JSON.parse(req.body) };
     const options = { abortEarly: false };
 
     if ( requestBody.userType === "writer" ) {

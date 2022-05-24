@@ -13,5 +13,4 @@ handler.use(connectDatabase);
 // account creation
 handler.post(validateUserType, validateRequest(userCreateSchema), createUserHandler);
 
-
 export default handler;
