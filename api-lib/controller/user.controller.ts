@@ -1,4 +1,5 @@
-import "@/api-lib/models/userModel";
+import "@/api-lib/models/studentModel";
+import "@/api-lib/models/writerModel";
 import { 
   NextApiRequest,
   NextApiResponse } from "next";
@@ -19,7 +20,10 @@ export const createUserHandler = async(
   const userBody: UserDocument = { ...req.body };
 
   try {
-    const checkUserExistence = await findUser({ email: userBody.email });
+    const checkUserExistence = await findUser({
+      userType: userBody.userType,
+      email: userBody.email
+    });
 
     if ( checkUserExistence ) {
       return clientError(res, 409, "Email already in use.");

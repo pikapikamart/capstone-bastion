@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 
 // userType = admin writer student
@@ -7,17 +7,14 @@ export interface UserDocument {
   firstName: string,
   lastName: string,
   email: string,
-  password: string,
-  writerId?: string,
-  studentId?: string
+  password: string
 }
 
-export interface UserMongooseDocument extends UserDocument, mongoose.Document {
-  createdAt: Date,
-  updatedAt: Date
+export interface UserMongooseDocument<T> extends UserDocument, mongoose.Document {
+  
 }
 
-const userSchema = new mongoose.Schema({
+export const userBaseModel = {
   userType: {
     type: String,
     required: true
@@ -38,16 +35,5 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  },
-  writerId: {
-    type: String,
-  },
-  studentId: {
-    type: String
   }
-}, { timestamps: true }
-)
-
-const UserModel = mongoose.models?.User || mongoose.model<UserMongooseDocument>("User", userSchema);
-
-export { UserModel };
+}
