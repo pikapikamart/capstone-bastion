@@ -24,6 +24,10 @@ export const clientError = (
       error.title = "Bad request.";
       error.error = message?? "Make sure to enter proper data.";
       break;
+    case 401:
+      error.title = "Unauthorized.";
+      error.error = "Make to sure to be logged in first.";
+      break;
     case 404:
       error.title = "Not found.";
       error.error = message?? "Request data not found.";
