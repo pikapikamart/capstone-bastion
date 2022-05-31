@@ -2,7 +2,7 @@ import nc from "next-connect";
 import { connectDatabase } from "@/api-lib/db";
 import { validateRequest } from "@/api-lib/middlewares/validateRequest";
 import { signInSchema } from "@/api-lib/schemas/user.schema";
-import { findUserHandler } from "@/api-lib/controller/user.controller";
+import { findWriterHandler } from "@/api-lib/controller/writer.controller";
 
 
 const handler = nc();
@@ -10,6 +10,6 @@ const handler = nc();
 handler.use(connectDatabase);
 
 // account signin workaround
-handler.post(validateRequest(signInSchema), findUserHandler);
+handler.post(validateRequest(signInSchema), findWriterHandler);
 
 export default handler;

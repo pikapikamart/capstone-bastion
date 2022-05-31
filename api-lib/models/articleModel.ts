@@ -7,6 +7,7 @@ export interface ArticleDocument {
   content: string,
   image: string,
   likes: number,
+  type: string,
   author: WriterMongooseDocument["_id"],
   collaborators: WriterMongooseDocument["_id"][]
 }
@@ -21,11 +22,17 @@ const articleSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  content: {
+  content: [
+    {
+      type: String,
+      required: true
+    }
+  ],
+  image: {
     type: String,
     required: true
   },
-  image: {
+  type: {
     type: String,
     required: true
   },

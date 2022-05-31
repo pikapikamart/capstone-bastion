@@ -2,10 +2,13 @@ import mongoose from "mongoose";
 import { 
   UserDocument,
   userBaseModel } from "./userModel";
+import { ArticleMongooseDocument } from "./articleModel";
 
 
 export interface WriterDocument extends UserDocument {
-  writerId: string
+  writerId: string,
+  image: string,
+  writings: ArticleMongooseDocument["_id"][]
 }
 
 export interface WriterMongooseDocument extends WriterDocument, mongoose.Document {
@@ -19,7 +22,16 @@ const writerSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true
-  }
+  },
+  image: {
+    type: String
+  },
+  writings: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Article"
+    }
+  ]
 }, { timestamps: true });
 
 

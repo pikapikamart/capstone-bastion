@@ -14,7 +14,7 @@ export const validateRequest = ( schema: AnySchema ) => async (
   try { 
 
     const options = { abortEarly: false };
-    await schema.validate({ body: JSON.parse(req.body) }, options);
+    await schema.validate({ body: req.body }, options);
     
     return next();
   } catch( error ) {

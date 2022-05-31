@@ -1,35 +1,29 @@
-import "@/api-lib/models/studentModel";
 import "@/api-lib/models/writerModel";
 import { 
   NextApiRequest,
   NextApiResponse } from "next";
-import { UserDocument } from "../models/userModel";
-import { 
-  findUser,
-  createUser } from "../service/user.service";
+import { WriterDocument } from "@/api-lib/models/writerModel";
 import { 
   clientError,
   validateError } from "../utils/errors";
 import { clientSuccess } from "../utils/success";
+import { createWriter, findWriter } from "../service/writer.service";
 
 
-export const createUserHandler = async (
+export const createWriterHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const userBody: UserDocument = { ...req.body };
+  const writerBody: WriterDocument = { ...req.body };
 
   try {
-    const checkUserExistence = await findUser({
-      userType: userBody.userType,
-      email: userBody.email
-    });
+    const checkWriterExistence = await findWriter({ email: writerBody.email });
 
-    if ( checkUserExistence ) {
+    if ( checkWriterExistence ) {
       return clientError(res, 409, "Email already in use.");
     }
 
-    await createUser(userBody);
+    await createWriter(writerBody);
 
     return clientSuccess(res, 201, "User account has been created.");
   } catch( error ) {
@@ -37,20 +31,16 @@ export const createUserHandler = async (
   }
 }
 
-export const findUserHandler = async(
+export const findWriterHandler = async(
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const userBody: Partial<UserDocument> = { ...JSON.parse(req.body) };
+  const writerBody: WriterDocument = JSON.parse(req.body);
   
   try {
-    const checkUserExistence = await findUser({
-      userType: userBody.userType,
-      email: userBody.email,
-      password: userBody.password
-    })
+    const checkWriterExistence = await findWriter({ email: writerBody.email });
 
-    if ( !checkUserExistence ) {
+    if ( !checkWriterExistence ) {
       return clientError(res, 404, "User account not found.")
     }
 

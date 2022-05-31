@@ -6,7 +6,7 @@ import {
   Account } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { connectDatabase } from "@/api-lib/db";
-import { findUser } from "@/api-lib/service/user.service";
+import { findWriter } from "@/api-lib/service/writer.service";
 
 
 type NextCallbackSession = {
@@ -25,20 +25,18 @@ const NextProviders = [
   CredentialsProvider({
     name: "Credentials",
     credentials: {
-      userType: { type: "hidden" },
       email: { label: "email", type: "text" },
       password: { label: "Password", type: "password" }
     },
     async authorize(credentials, req) {
       const user = {
-        userType: "writer",
         email: credentials?.email,
         password: credentials?.password
       }
 
       await connectDatabase(null, null, null);
 
-      const checkUserExistence = await findUser({ 
+      const checkUserExistence = await findWriter({ 
         email: user.email,
         password: user.password 
       });
@@ -59,15 +57,18 @@ const NextCallbacks = {
       ...session,
       user: {
         ...session.user,
-        userType: token.userType
+        userType: token.userType,
+        password: token.password
       }
     }
     return newSession;
   },
   async jwt({ token, account, user }: NextCallbackJWT) {
+
     if (user) {
       token.accessToken = account.access_token;
       token.userType = user.userType;
+      token.password = user.password;
     }
 
     return token;

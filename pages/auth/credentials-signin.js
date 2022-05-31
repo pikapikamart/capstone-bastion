@@ -10,7 +10,7 @@ export default function SignIn({ csrfToken }) {
   const handleFetch = async data =>{
 
     try {
-      const result = await fetch("/api/user/signin", {
+      const result = await fetch("/api/user/signin/writer", {
         headers: {
           "Content-type": "application-json"
         },
@@ -31,7 +31,7 @@ export default function SignIn({ csrfToken }) {
     }
   }
 
-  const handleFormButtonClick = async event => {
+  const handleFormButtonClick = async () => {
     const data = {
       userType: "writer",
       email,
