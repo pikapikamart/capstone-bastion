@@ -1,7 +1,8 @@
 import { 
   DocumentDefinition,
   FilterQuery, 
-  QueryOptions } from "mongoose";
+  QueryOptions, 
+  UpdateQuery} from "mongoose";
 import { 
   WriterDocument, 
   WriterModel, 
@@ -19,4 +20,12 @@ export const createWriter = async (
   writerInfo: DocumentDefinition<WriterDocument>
 ): Promise<WriterMongooseDocument> => (
   WriterModel.create(writerInfo)
+)
+
+export const updateWriter = async (
+  query: FilterQuery<WriterDocument>,
+  update: UpdateQuery<WriterDocument>,
+  option: QueryOptions = {  }
+) => (
+  WriterModel.findOneAndUpdate(query, update, option)
 )

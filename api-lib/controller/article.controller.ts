@@ -11,9 +11,8 @@ import { clientSuccess } from "../utils/success";
 import { 
   findArticle,
   createArticle } from "../service/article.service";
-import { getCurrentUser } from "../utils";
-import { updateWriterUser } from "../service/user.service";
-
+import { getCurrentWriter } from "../utils";
+import { updateWriter } from "../service/writer.service";
 
 
 export const createArticleHandler = async (
@@ -22,7 +21,7 @@ export const createArticleHandler = async (
 ) => {
   // use a image string returned by filereader
   // send to cloudinary
-  const articleBody: ArticleDocument = { ...req.body };
+  const articleBody: ArticleDocument = req.body;
 
   try {
     const checkArticleExistence = await findArticle({ title: articleBody.title });
@@ -31,25 +30,27 @@ export const createArticleHandler = async (
       return clientError(res, 409, "Article already created.");
     }
 
-    const currentUser = await getCurrentUser();
+    const currentWriter = await getCurrentWriter(req);
 
-    if ( !currentUser ) {
+    if ( !currentWriter ) {
       return clientError(res, 401)
     }
     
-    articleBody.author = currentUser._id;
+    articleBody.author = currentWriter._id;
     articleBody.likes = 0;
 
-    await createArticle(articleBody);
+    const createdArticle = await createArticle(articleBody);
     
-    const userUpdateOptions = {
+    const updateOptions = {
       query: {
-        writerId: "test"
+        writerId: currentWriter.writerId
       },
       update: {
-        
+        $push: { writings: createdArticle._id }
       }
     }
+
+    await updateWriter(updateOptions.query, updateOptions.update);
 
   } catch( error ) {
     return validateError(error, 400, res)

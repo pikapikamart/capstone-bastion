@@ -1,17 +1,18 @@
+import { NextApiRequest } from "next";
 import { getSession } from "next-auth/react";
-import { findUser } from "../service/user.service";
+import { findWriter } from "../service/writer.service";
 
 
-export const getCurrentUser = async () =>{
-  const userSession = await getSession();
+export const getCurrentWriter = async ( req: NextApiRequest ) => {
+  const writerSession = await getSession({ req });
 
-  if ( userSession && userSession.user ) {
-    const userAccount = await findUser({
-      userType: userSession.user.userType,
-      email: userSession.user.email
-    });
+  if ( writerSession && writerSession.user ) {
+    const writerAccount = await findWriter({
+      email: writerSession.user.email,
+      password: writerSession.user.password
+    })
 
-    return userAccount;
+    return writerAccount;
   }
 
   return false;

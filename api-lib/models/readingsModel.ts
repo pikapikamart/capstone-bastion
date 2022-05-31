@@ -1,30 +1,6 @@
 import mongoose from "mongoose";
 
 
-const readingsTopic = "Education News Updates Sports Entertainments Education".split(" ");
-
-type ReadingsRef = {
-  type: typeof mongoose.Schema.Types.ObjectId,
-  ref: "Article"
-}
-
-type MappedReadingsTopic = {
-  [key: string]: ReadingsRef[]
-}
-
-const mapReadingsTopic = () =>{
-  const mappedReadings: MappedReadingsTopic = {};
-
-  readingsTopic.forEach(topic =>{
-    mappedReadings[topic] = [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Article"
-    }]
-  });
-
-  return mappedReadings;
-}
-
 const readingsSchema = new mongoose.Schema({
   education: [{
     type: mongoose.Schema.Types.ObjectId,
