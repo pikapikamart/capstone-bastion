@@ -4,28 +4,28 @@ import {
   QueryOptions, 
   UpdateQuery} from "mongoose";
 import { 
-  StudentDocument, 
+  Student, 
   StudentModel, 
-  StudentMongooseDocument } from "../models/studentModel";
+  StudentDocument } from "../models/studentModel";
 
 
 export const findStudent = async (
-  query: FilterQuery<StudentDocument>,
+  query: FilterQuery<Student>,
   option: QueryOptions = { lean: true }
-): Promise<StudentMongooseDocument | null> => (
+): Promise<StudentDocument | null> => (
   StudentModel.findOne(query, option)
 )
 
 export const createStudent = async (
-  studentInfo: DocumentDefinition<StudentDocument>
-): Promise<StudentMongooseDocument> => (
+  studentInfo: DocumentDefinition<Student>
+): Promise<StudentDocument> => (
   StudentModel.create(studentInfo)
 )
 
 export const updateStudent = async (
-  query: FilterQuery<StudentDocument>,
-  update: UpdateQuery<StudentDocument>,
+  query: FilterQuery<Student>,
+  update: UpdateQuery<Student>,
   option: QueryOptions = {  }
-): Promise<StudentMongooseDocument | null> => (
+): Promise<StudentDocument | null> => (
   StudentModel.findOneAndUpdate(query, update, option)
 )

@@ -7,8 +7,8 @@ import {
 import { JWT } from "next-auth/jwt";
 import { connectDatabase } from "@/api-lib/db";
 import { findWriter } from "@/api-lib/service/writer.service";
-import { WriterMongooseDocument } from "@/api-lib/models/writerModel";
-import { StudentMongooseDocument } from "@/api-lib/models/studentModel";
+import { WriterDocument } from "@/api-lib/models/writerModel";
+import { StudentDocument } from "@/api-lib/models/studentModel";
 import { findStudent } from "@/api-lib/service/student.service";
 
 
@@ -38,28 +38,26 @@ const NextProviders = [
         email: credentials?.email,
         password: credentials?.password
       }
-      let userExistence: WriterMongooseDocument | StudentMongooseDocument | null = null;
+      let userExistence: WriterDocument | StudentDocument | null = null;
 
       await connectDatabase(null, null, null);
       
       if ( user.userType==="writer" ) {
-        userExistence = await findWriter({ 
-          email: user.email,
-          password: user.password 
-        });
+        userExistence = await findWriter({ email: user.email });
+
       } else if ( user.userType==="student" ) {
-        userExistence = await findStudent({ 
-          email: user.email,
-          password: user.password 
-        });
-      } 
+        userExistence = await findStudent({ email: user.email });
+      }
 
       if ( userExistence ) {
-        
-        return user;
-      } else {
-        return Promise.reject(new Error("Authentication failed. Check your credentials."));
-      }
+        const isOwned = await userExistence.comparePassword(user.password as string);
+
+        if ( isOwned ) {
+          return user;
+        }
+      } 
+
+      return Promise.reject(new Error("Authentication failed. Check your credentials."));
     }
   })
 ]

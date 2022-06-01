@@ -3,7 +3,7 @@ import {
   NextApiRequest,
   NextApiResponse
 } from "next";
-import { ArticleDocument } from "@/api-lib/models/articleModel";
+import { Article } from "@/api-lib/models/articleModel";
 import {
   clientError, 
   validateError } from "../utils/errors";
@@ -21,7 +21,7 @@ export const createArticleHandler = async (
 ) => {
   // use a image string returned by filereader
   // send to cloudinary
-  const articleBody: ArticleDocument = req.body;
+  const articleBody: Article = req.body;
 
   try {
     const checkArticleExistence = await findArticle({ title: articleBody.title });

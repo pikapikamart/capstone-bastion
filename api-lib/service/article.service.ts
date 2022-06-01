@@ -4,19 +4,19 @@ import {
   QueryOptions } from "mongoose";
 import { 
   ArticleModel,
-  ArticleDocument,
-  ArticleMongooseDocument } from "../models/articleModel";
+  Article,
+  ArticleDocument } from "../models/articleModel";
 
 
 export const findArticle = async (
-  query: FilterQuery<ArticleDocument>,
+  query: FilterQuery<Article>,
   option: QueryOptions = { lean: true }
-): Promise<ArticleMongooseDocument | null>  => (
+): Promise<ArticleDocument | null>  => (
   ArticleModel.findOne(query, option)
 )
 
 export const createArticle = async(
-  articleInfo: DocumentDefinition<ArticleDocument>
-): Promise<ArticleMongooseDocument> => (
+  articleInfo: DocumentDefinition<Article>
+): Promise<ArticleDocument> => (
   ArticleModel.create(articleInfo)
 )

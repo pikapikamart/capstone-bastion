@@ -2,13 +2,13 @@ import "@/api-lib/models/studentModel";
 import { 
   NextApiRequest,
   NextApiResponse } from "next";
-import { WriterDocument } from "@/api-lib/models/writerModel";
+import { Writer } from "@/api-lib/models/writerModel";
 import { 
   clientError,
   validateError } from "../utils/errors";
 import { clientSuccess } from "../utils/success";
 import { createWriter, findWriter } from "../service/writer.service";
-import { StudentDocument } from "@/api-lib/models/studentModel";
+import { Student } from "@/api-lib/models/studentModel";
 import { createStudent, findStudent } from "../service/student.service";
 
 
@@ -16,7 +16,7 @@ export const createStudentHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const studentBody: StudentDocument = req.body;
+  const studentBody: Student = req.body;
 
   try {
     const studentExistence = await findStudent({ email: studentBody.email });
@@ -37,7 +37,7 @@ export const findStudentHandler = async(
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const studentBody: StudentDocument = JSON.parse(req.body);
+  const studentBody: Student = JSON.parse(req.body);
   
   try {
     const studentExistence = await findStudent({ email: studentBody.email });

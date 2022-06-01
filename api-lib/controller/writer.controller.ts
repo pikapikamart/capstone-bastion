@@ -2,7 +2,7 @@ import "@/api-lib/models/writerModel";
 import { 
   NextApiRequest,
   NextApiResponse } from "next";
-import { WriterDocument } from "@/api-lib/models/writerModel";
+import { Writer } from "@/api-lib/models/writerModel";
 import { 
   clientError,
   validateError } from "../utils/errors";
@@ -14,7 +14,7 @@ export const createWriterHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const writerBody: WriterDocument = req.body;
+  const writerBody: Writer = req.body;
 
   try {
     const writerExistence = await findWriter({ email: writerBody.email });
@@ -31,11 +31,36 @@ export const createWriterHandler = async (
   }
 }
 
+export const signInWriterhandler = async(
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  const writerBody: Writer = JSON.parse(req.body);
+
+  try {
+    const writerExistence = await findWriter({ email: writerBody.email });
+
+    if ( !writerExistence ) {
+      return clientError(res, 404, "User account not found.")
+    }
+
+    const isOwned = await writerExistence.comparePassword(writerBody.password);
+
+    if ( isOwned ) {
+      return clientSuccess(res, 201, "User successfuly authenticated.");
+    } else {
+      return clientError(res, 401);
+    }
+  } catch( error ) {
+    return validateError(error, 400, res);
+  }
+}
+
 export const findWriterHandler = async(
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const writerBody: WriterDocument = JSON.parse(req.body);
+  const writerBody: Writer = JSON.parse(req.body);
   
   try {
     const writerExistence = await findWriter({ email: writerBody.email });

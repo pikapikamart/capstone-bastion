@@ -1,22 +1,21 @@
 import mongoose from "mongoose";
 import { 
-  UserDocument,
-  userBaseModel } from "./userModel";
-import { ArticleMongooseDocument } from "./articleModel";
+  User,
+  userBaseModel, 
+  UserDocument} from "./userModel";
+import { ArticleDocument } from "./articleModel";
+import bcrypt from "bcrypt";
 
 
-export interface WriterDocument extends UserDocument {
+export interface Writer extends User {
   writerId: string,
   image: string,
-  writings: ArticleMongooseDocument["_id"][]
+  writings: ArticleDocument["_id"][]
 }
 
-export interface WriterMongooseDocument extends WriterDocument, mongoose.Document {
-  createdAt: Date,
-  updatedAt: Date
-}
+export interface WriterDocument extends Writer, UserDocument {}
 
-const writerSchema = new mongoose.Schema({
+const writerSchema: mongoose.Schema<WriterDocument> = new mongoose.Schema({
   ...userBaseModel,
   writerId: {
     type: String,
@@ -34,7 +33,29 @@ const writerSchema = new mongoose.Schema({
   ]
 }, { timestamps: true });
 
+writerSchema.pre("save", async function(this: WriterDocument, next) {
+  if ( !this.isModified("password") ) {
+    return next();
+  }
 
-const WriterModel = mongoose.models?.Writer || mongoose.model<WriterMongooseDocument>("Writer", writerSchema);
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(this.password, salt);
+
+  this.password = hash;
+
+  return next();
+})
+
+writerSchema.methods.comparePassword = async function( password: string ): Promise<boolean> {
+  const user = this as WriterDocument;
+
+  try {
+    return await bcrypt.compare(password, user.password);
+  } catch( error ) {
+    return false;
+  } 
+}
+
+const WriterModel = mongoose.models?.Writer || mongoose.model<WriterDocument>("Writer", writerSchema);
 
 export { WriterModel };

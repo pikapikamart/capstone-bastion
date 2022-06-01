@@ -1,18 +1,18 @@
 import mongoose from "mongoose";
-import { WriterMongooseDocument } from "./writerModel";
+import { WriterDocument } from "./writerModel";
 
 
-export interface ArticleDocument {
+export interface Article {
   title: string,
   content: string,
   image: string,
   likes: number,
   type: string,
-  author: WriterMongooseDocument["_id"],
-  collaborators: WriterMongooseDocument["_id"][]
+  author: WriterDocument["_id"],
+  collaborators: WriterDocument["_id"][]
 }
 
-export interface ArticleMongooseDocument extends ArticleDocument, mongoose.Document {
+export interface ArticleDocument extends Article, mongoose.Document {
   createdAt: Date,
   updatedAt: Date
 }
@@ -54,6 +54,6 @@ const articleSchema = new mongoose.Schema({
 },{ timestamps: true }
 );
 
-const ArticleModel = mongoose.models?.Article || mongoose.model<ArticleMongooseDocument>("Article", articleSchema);
+const ArticleModel = mongoose.models?.Article || mongoose.model<ArticleDocument>("Article", articleSchema);
 
 export { ArticleModel };

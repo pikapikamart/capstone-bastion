@@ -1,17 +1,16 @@
 import mongoose from "mongoose";
 import { 
-  UserDocument,
-  userBaseModel } from "./userModel";
+  User,
+  userBaseModel, 
+  UserDocument} from "./userModel";
+import bcrypt from "bcrypt";
 
 
-export interface StudentDocument extends UserDocument {
+export interface Student extends User {
   studentId: string
 }
 
-export interface StudentMongooseDocument extends StudentDocument, mongoose.Document {
-  createdAt: Date,
-  updatedAt: Date
-}
+export interface StudentDocument extends Student, UserDocument {}
 
 const studentSchema = new mongoose.Schema({
   ...userBaseModel,
@@ -29,6 +28,29 @@ const studentSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-const StudentModel = mongoose.models?.Student || mongoose.model<StudentMongooseDocument>("Student", studentSchema);
+studentSchema.pre("save", async function(this: StudentDocument, next) {
+  if ( !this.isModified("password") ) {
+    return next();
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(this.password, salt);
+
+  this.password = hash;
+
+  return next();
+})
+
+studentSchema.methods.comparePassword = async function( password: string ): Promise<boolean> {
+  const user = this as StudentDocument;
+
+  try {
+    return await bcrypt.compare(password, user.password);
+  } catch( error ) {
+    return false;
+  } 
+}
+
+const StudentModel = mongoose.models?.Student || mongoose.model<StudentDocument>("Student", studentSchema);
 
 export { StudentModel };

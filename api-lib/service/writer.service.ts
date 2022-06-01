@@ -4,28 +4,28 @@ import {
   QueryOptions, 
   UpdateQuery} from "mongoose";
 import { 
-  WriterDocument, 
+  Writer, 
   WriterModel, 
-  WriterMongooseDocument } from "../models/writerModel";
+  WriterDocument } from "../models/writerModel";
 
 
 export const findWriter = async (
-  query: FilterQuery<WriterDocument>,
-  option: QueryOptions = { lean: true }
-): Promise<WriterMongooseDocument | null> => (
+  query: FilterQuery<Writer>,
+  option: QueryOptions = {}
+): Promise<WriterDocument | null> => (
   WriterModel.findOne(query, option)
 )
 
 export const createWriter = async (
-  writerInfo: DocumentDefinition<WriterDocument>
-): Promise<WriterMongooseDocument> => (
+  writerInfo: DocumentDefinition<Writer>
+): Promise<WriterDocument> => (
   WriterModel.create(writerInfo)
 )
 
 export const updateWriter = async (
-  query: FilterQuery<WriterDocument>,
-  update: UpdateQuery<WriterDocument>,
-  option: QueryOptions = {  }
-): Promise<WriterMongooseDocument | null> => (
+  query: FilterQuery<Writer>,
+  update: UpdateQuery<Writer>,
+  option: QueryOptions = {}
+): Promise<WriterDocument | null> => (
   WriterModel.findOneAndUpdate(query, update, option)
 )
