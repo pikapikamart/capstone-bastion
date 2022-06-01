@@ -23,7 +23,8 @@ export const writerCreateSchema = yup.object({
 
 export const studentCreateSchema = yup.object({
   body: yup.object({
-    studentId: yup.string().required("Student Id is required.")
+    studentId: yup.string().required("Student Id is required."),
+    ...payload
   })
 })
 

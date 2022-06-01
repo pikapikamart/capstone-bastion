@@ -7,6 +7,9 @@ import {
 import { JWT } from "next-auth/jwt";
 import { connectDatabase } from "@/api-lib/db";
 import { findWriter } from "@/api-lib/service/writer.service";
+import { WriterMongooseDocument } from "@/api-lib/models/writerModel";
+import { StudentMongooseDocument } from "@/api-lib/models/studentModel";
+import { findStudent } from "@/api-lib/service/student.service";
 
 
 type NextCallbackSession = {
@@ -25,23 +28,33 @@ const NextProviders = [
   CredentialsProvider({
     name: "Credentials",
     credentials: {
+      userType: { type: "hidden" },
       email: { label: "email", type: "text" },
       password: { label: "Password", type: "password" }
     },
     async authorize(credentials, req) {
       const user = {
+        userType: credentials?.userType,
         email: credentials?.email,
         password: credentials?.password
       }
+      let userExistence: WriterMongooseDocument | StudentMongooseDocument | null = null;
 
       await connectDatabase(null, null, null);
+      
+      if ( user.userType==="writer" ) {
+        userExistence = await findWriter({ 
+          email: user.email,
+          password: user.password 
+        });
+      } else if ( user.userType==="student" ) {
+        userExistence = await findStudent({ 
+          email: user.email,
+          password: user.password 
+        });
+      } 
 
-      const checkUserExistence = await findWriter({ 
-        email: user.email,
-        password: user.password 
-      });
-       
-      if ( checkUserExistence ) {
+      if ( userExistence ) {
         
         return user;
       } else {

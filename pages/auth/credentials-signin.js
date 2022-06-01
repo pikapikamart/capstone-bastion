@@ -10,7 +10,7 @@ export default function SignIn({ csrfToken }) {
   const handleFetch = async data =>{
 
     try {
-      const result = await fetch("/api/user/signin/writer", {
+      const result = await fetch("/api/user/signin/student", {
         headers: {
           "Content-type": "application-json"
         },
@@ -33,7 +33,6 @@ export default function SignIn({ csrfToken }) {
 
   const handleFormButtonClick = async () => {
     const data = {
-      userType: "writer",
       email,
       password
     }
@@ -48,7 +47,7 @@ export default function SignIn({ csrfToken }) {
   return (
     <form method="post" action="/api/auth/callback/credentials" ref={ form }>
       <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-      <input name="usertype" type="hidden"  defaultValue="writer"/>
+      <input name="userType" type="hidden" defaultValue="student"/>
       <label>
         email
         <input name="email" type="text" onChange={ e => setEmail(e.target.value) } value={ email } />

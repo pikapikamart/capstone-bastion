@@ -52,6 +52,8 @@ export const createArticleHandler = async (
 
     await updateWriter(updateOptions.query, updateOptions.update);
 
+    return clientSuccess(res, 200, "Article creation successful.");
+
   } catch( error ) {
     return validateError(error, 400, res)
   }

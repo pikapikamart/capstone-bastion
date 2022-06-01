@@ -26,6 +26,6 @@ export const updateWriter = async (
   query: FilterQuery<WriterDocument>,
   update: UpdateQuery<WriterDocument>,
   option: QueryOptions = {  }
-) => (
+): Promise<WriterMongooseDocument | null> => (
   WriterModel.findOneAndUpdate(query, update, option)
 )

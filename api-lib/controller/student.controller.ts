@@ -1,35 +1,31 @@
 import "@/api-lib/models/studentModel";
-import "@/api-lib/models/writerModel";
 import { 
   NextApiRequest,
   NextApiResponse } from "next";
-import { UserDocument } from "../models/userModel";
-import { 
-  findUser,
-  createUser } from "../service/user.service";
+import { WriterDocument } from "@/api-lib/models/writerModel";
 import { 
   clientError,
   validateError } from "../utils/errors";
 import { clientSuccess } from "../utils/success";
+import { createWriter, findWriter } from "../service/writer.service";
+import { StudentDocument } from "@/api-lib/models/studentModel";
+import { createStudent, findStudent } from "../service/student.service";
 
 
-export const createUserHandler = async (
+export const createStudentHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const userBody: UserDocument = { ...req.body };
+  const studentBody: StudentDocument = req.body;
 
   try {
-    const checkUserExistence = await findUser({
-      userType: userBody.userType,
-      email: userBody.email
-    });
+    const studentExistence = await findStudent({ email: studentBody.email });
 
-    if ( checkUserExistence ) {
+    if ( studentExistence ) {
       return clientError(res, 409, "Email already in use.");
     }
 
-    await createUser(userBody);
+    await createStudent(studentBody);
 
     return clientSuccess(res, 201, "User account has been created.");
   } catch( error ) {
@@ -37,20 +33,16 @@ export const createUserHandler = async (
   }
 }
 
-export const findUserHandler = async(
+export const findStudentHandler = async(
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const userBody: Partial<UserDocument> = { ...JSON.parse(req.body) };
+  const studentBody: StudentDocument = JSON.parse(req.body);
   
   try {
-    const checkUserExistence = await findUser({
-      userType: userBody.userType,
-      email: userBody.email,
-      password: userBody.password
-    })
+    const studentExistence = await findStudent({ email: studentBody.email });
 
-    if ( !checkUserExistence ) {
+    if ( !studentExistence ) {
       return clientError(res, 404, "User account not found.")
     }
 

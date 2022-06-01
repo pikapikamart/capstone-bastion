@@ -14,12 +14,12 @@ export const createWriterHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const writerBody: WriterDocument = { ...req.body };
+  const writerBody: WriterDocument = req.body;
 
   try {
-    const checkWriterExistence = await findWriter({ email: writerBody.email });
+    const writerExistence = await findWriter({ email: writerBody.email });
 
-    if ( checkWriterExistence ) {
+    if ( writerExistence ) {
       return clientError(res, 409, "Email already in use.");
     }
 
@@ -38,9 +38,9 @@ export const findWriterHandler = async(
   const writerBody: WriterDocument = JSON.parse(req.body);
   
   try {
-    const checkWriterExistence = await findWriter({ email: writerBody.email });
+    const writerExistence = await findWriter({ email: writerBody.email });
 
-    if ( !checkWriterExistence ) {
+    if ( !writerExistence ) {
       return clientError(res, 404, "User account not found.")
     }
 
