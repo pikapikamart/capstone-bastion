@@ -33,6 +33,31 @@ export const createStudentHandler = async (
   }
 }
 
+export const signInStudentHandler = async(
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  const studentBody: Student = JSON.parse(req.body);
+  
+  try {
+    const studentExistence = await findStudent({ email: studentBody.email });
+
+    if ( !studentExistence ) {
+      return clientError(res, 404, "User account not found.")
+    }
+
+    const isOwned = await studentExistence.comparePassword(studentBody.password);
+
+    if ( isOwned ) {
+      return clientSuccess(res, 201, "User successfuly authenticated.");
+    } else {
+      return clientError(res, 401);
+    }
+  } catch( error ) {
+    return validateError(error, 400, res);
+  }
+}
+
 export const findStudentHandler = async(
   req: NextApiRequest,
   res: NextApiResponse

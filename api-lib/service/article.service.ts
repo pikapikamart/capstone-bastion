@@ -10,7 +10,7 @@ import {
 
 export const findArticle = async (
   query: FilterQuery<Article>,
-  option: QueryOptions = { lean: true }
+  option: QueryOptions = {}
 ): Promise<ArticleDocument | null>  => (
   ArticleModel.findOne(query, option)
 )

@@ -13,6 +13,9 @@ import {
   createArticle } from "../service/article.service";
 import { getCurrentWriter } from "../utils";
 import { updateWriter } from "../service/writer.service";
+import { 
+  createReadings, 
+  updateReadings } from "../service/readings.service";
 
 
 export const createArticleHandler = async (
@@ -41,18 +44,43 @@ export const createArticleHandler = async (
 
     const createdArticle = await createArticle(articleBody);
     
-    const updateOptions = {
+    const writerUpdate = {
       query: {
         writerId: currentWriter.writerId
       },
       update: {
-        $push: { writings: createdArticle._id }
+        $push: { 
+          writings: createdArticle._id 
+        }
       }
     }
 
-    await updateWriter(updateOptions.query, updateOptions.update);
+    await updateWriter(writerUpdate.query, writerUpdate.update);
 
-    return clientSuccess(res, 200, "Article creation successful.");
+    const readingsUpdate = {
+      query: {
+        genre: createdArticle.type
+      },
+      update: {
+        $push: {
+          readings: createdArticle._id
+        }
+      }
+    }
+
+    const updatedReadings = await updateReadings(readingsUpdate.query, readingsUpdate.update);
+    console.log(updateReadings);
+
+    if ( !updatedReadings ) {
+      const readingsBody = {
+        genre: createdArticle.type,
+        readings: [ createdArticle._id ]
+      }
+
+      await createReadings(readingsBody);
+    }
+
+    return clientSuccess(res, 201, "Article creation successful.");
 
   } catch( error ) {
     return validateError(error, 400, res)

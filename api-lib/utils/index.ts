@@ -7,10 +7,7 @@ export const getCurrentWriter = async ( req: NextApiRequest ) => {
   const writerSession = await getSession({ req });
 
   if ( writerSession && writerSession.user ) {
-    const writerAccount = await findWriter({
-      email: writerSession.user.email,
-      password: writerSession.user.password
-    })
+    const writerAccount = await findWriter({ email: writerSession.user.email })
 
     return writerAccount;
   }

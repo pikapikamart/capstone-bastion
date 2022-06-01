@@ -11,7 +11,7 @@ import {
 
 export const findStudent = async (
   query: FilterQuery<Student>,
-  option: QueryOptions = { lean: true }
+  option: QueryOptions = {}
 ): Promise<StudentDocument | null> => (
   StudentModel.findOne(query, option)
 )
@@ -25,7 +25,7 @@ export const createStudent = async (
 export const updateStudent = async (
   query: FilterQuery<Student>,
   update: UpdateQuery<Student>,
-  option: QueryOptions = {  }
+  option: QueryOptions = {}
 ): Promise<StudentDocument | null> => (
   StudentModel.findOneAndUpdate(query, update, option)
 )
