@@ -26,33 +26,3 @@ const readingSchema: mongoose.Schema<ReadingsDocument> = new mongoose.Schema({
 const ReadingsModel = mongoose.models?.Readings || mongoose.model<ReadingsDocument>("Readings", readingSchema);
 
 export { ReadingsModel };
-
-
-/*
-new mongoose.Schema({
-  genre: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  collection: [
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Article"
-  ]
-})
-
-schema.findOneAndUpdate({genre: News}, { $push: { collection: ObjectId("Article")} });
-
-if ( there are no schema with type of genre ) {
-  schema.create({
-    genre: News
-  })
-}
-
-
-schema.findOneAndUpdate({genre: News}, {$push: {collection: ObjectId("Article")}})
-
-
-
-schema.updateOne({})
-*/

@@ -4,11 +4,11 @@ import { NextApiResponse } from "next";
 export const clientSuccess = (
   res: NextApiResponse,
   status: number,
-  message: string
+  data: any
 ) => {
   const success = {
     status,
-    message
+    data
   };
 
   return res.status(status).json(success);

@@ -22,3 +22,10 @@ export const createReadings = async (
 ): Promise<ReadingsDocument> =>(
   ReadingsModel.create(readingInfo)
 )
+
+export const findSlicedReadings = async (
+  projection: any,
+  population: any
+): Promise<ReadingsDocument[] | null> => (
+  ReadingsModel.find({}, projection).populate(population)
+)
