@@ -14,9 +14,14 @@ export const findArticle = async (
   query: FilterQuery<Article>,
   projection: ProjectionType<Article> = "",
   populate?: PopulateOptions
-): Promise<any>  => (
-  populate? ArticleModel.findOne(query, projection).populate(populate) : ArticleModel.findOne(query, projection) 
-)
+): Promise<ArticleDocument | null> => {
+
+  const find = async () => (
+    populate? ArticleModel.findOne(query, projection).populate(populate) : ArticleModel.findOne(query, projection) 
+  )
+
+  return find();
+}
 
 export const createArticle = async(
   articleInfo: DocumentDefinition<Article>

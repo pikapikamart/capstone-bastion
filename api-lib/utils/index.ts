@@ -4,7 +4,7 @@ import { WriterDocument } from "../models/writerModel";
 import { findWriter } from "../service/writer.service";
 
 
-export const getCurrentWriter = async ( req: NextApiRequest ): Promise<WriterDocument | false | null> => {
+export const getCurrentWriter = async ( req: NextApiRequest ): Promise<WriterDocument | null> => {
   const writerSession = await getSession({ req });
 
   if ( writerSession && writerSession.user ) {
@@ -13,5 +13,5 @@ export const getCurrentWriter = async ( req: NextApiRequest ): Promise<WriterDoc
     return writerAccount;
   }
 
-  return false;
+  return null;
 }

@@ -20,9 +20,9 @@ export const createStudentHandler = async (
   };
 
   try {
-    const studentExistence = await findStudent({ email: studentBody.email });
+    const foundStudent = await findStudent({ email: studentBody.email });
 
-    if ( studentExistence ) {
+    if ( foundStudent ) {
       return clientError(res, 409, "Email already in use.");
     }
 
@@ -41,13 +41,13 @@ export const signInStudentHandler = async(
   const studentBody: Student = JSON.parse(req.body);
   
   try {
-    const studentExistence = await findStudent({ email: studentBody.email });
+    const foundStudent = await findStudent({ email: studentBody.email });
 
-    if ( !studentExistence ) {
+    if ( !foundStudent ) {
       return clientError(res, 404, "User account not found.")
     }
 
-    const isOwned = await studentExistence.comparePassword(studentBody.password);
+    const isOwned = await foundStudent.comparePassword(studentBody.password);
 
     if ( isOwned ) {
       return clientSuccess(res, 201, "User successfuly authenticated.");
@@ -66,9 +66,9 @@ export const findStudentHandler = async(
   const studentBody: Student = JSON.parse(req.body);
   
   try {
-    const studentExistence = await findStudent({ email: studentBody.email });
+    const foundStudent = await findStudent({ email: studentBody.email });
 
-    if ( !studentExistence ) {
+    if ( !foundStudent ) {
       return clientError(res, 404, "User account not found.")
     }
 

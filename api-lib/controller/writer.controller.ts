@@ -20,9 +20,9 @@ export const createWriterHandler = async (
   };
 
   try {
-    const writerExistence = await findWriter({ email: writerBody.email });
+    const foundWriter = await findWriter({ email: writerBody.email });
 
-    if ( writerExistence ) {
+    if ( foundWriter ) {
       return clientError(res, 409, "Email already in use.");
     }
 
@@ -80,7 +80,7 @@ export const findWriterHandler = async(
         }
       }
     }
-    const foundWriter: WriterDocument | null = await findWriter(
+    const foundWriter = await findWriter(
       serviceOptions.query,
       serviceOptions.projection,
       serviceOptions.populate

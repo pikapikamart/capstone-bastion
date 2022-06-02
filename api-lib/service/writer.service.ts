@@ -15,9 +15,15 @@ export const findWriter = async (
   query: FilterQuery<Writer>,
   projection: ProjectionType<Writer> = "",
   populate?: PopulateOptions
-): Promise<any> => (
-  populate? WriterModel.findOne(query, projection).populate(populate) : WriterModel.findOne(query, projection)
-)
+): Promise<WriterDocument | null> => {
+
+  const find = async () => (
+    populate? WriterModel.findOne(query, projection).populate(populate) : WriterModel.findOne(query, projection)
+  )
+
+  return find()
+}
+
 
 export const createWriter = async (
   writerInfo: DocumentDefinition<Writer>

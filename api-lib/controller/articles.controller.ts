@@ -22,7 +22,8 @@ export const findArticlesHandler = async (
         query: {},
         projection: "-_id",
         option: {
-          limit: 6
+          limit: 6,
+          sort: "-createdAt"
         },
         populate: {
           path: "author collaborators",

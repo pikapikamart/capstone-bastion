@@ -30,9 +30,9 @@ export const createArticleHandler = async (
   };
 
   try {
-    const checkArticleExistence: ArticleDocument | null = await findArticle({ title: articleBody.title });
+    const foundArticle = await findArticle({ title: articleBody.title });
 
-    if ( checkArticleExistence ) {
+    if ( foundArticle ) {
       return clientError(res, 409, "Article already created.");
     }
 
@@ -106,7 +106,7 @@ export const findArticleHandler = async (
         select: "-_id -email -password -writerId"
       }
     }
-    const foundArticle: ArticleDocument | null = await findArticle(
+    const foundArticle = await findArticle(
       serviceOptions.query,
       serviceOptions.projection,
       serviceOptions.populate
