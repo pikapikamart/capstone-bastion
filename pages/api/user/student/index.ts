@@ -12,4 +12,5 @@ handler.use(connectDatabase);
 // account creation
 handler.post(validateRequest(studentCreateSchema), createStudentHandler);
 
+
 export default handler;

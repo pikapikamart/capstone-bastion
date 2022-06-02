@@ -1,5 +1,6 @@
 import { 
   FilterQuery,
+  PopulateOptions,
   QueryOptions } from "mongoose";
 import { 
   ArticleModel,
@@ -11,7 +12,7 @@ export const findArticles = async (
   query: FilterQuery<Article>,
   projection: string,
   option: QueryOptions = {},
-  population: any
+  population: PopulateOptions
 ): Promise<ArticleDocument[] | null> => (
   ArticleModel.find(query, projection, option).populate(population)
 )

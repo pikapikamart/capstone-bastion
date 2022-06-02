@@ -1,9 +1,8 @@
-import "@/api-lib/models/articleModel";
 import {
   NextApiRequest,
   NextApiResponse
 } from "next";
-import { Article } from "@/api-lib/models/articleModel";
+import { Article, ArticleDocument } from "@/api-lib/models/articleModel";
 import {
   clientError, 
   validateError } from "../utils/errors";
@@ -16,6 +15,7 @@ import { updateWriter } from "../service/writer.service";
 import { 
   createReadings, 
   updateReadings } from "../service/readings.service";
+import { nanoid } from "nanoid";
 
 
 export const createArticleHandler = async (
@@ -24,10 +24,13 @@ export const createArticleHandler = async (
 ) => {
   // use a image string returned by filereader
   // send to cloudinary
-  const articleBody: Article = req.body;
+  const articleBody: Article = {
+    ...req.body,
+    searchId: nanoid()
+  };
 
   try {
-    const checkArticleExistence = await findArticle({ title: articleBody.title });
+    const checkArticleExistence: ArticleDocument | null = await findArticle({ title: articleBody.title });
 
     if ( checkArticleExistence ) {
       return clientError(res, 409, "Article already created.");
@@ -69,7 +72,6 @@ export const createArticleHandler = async (
     }
 
     const updatedReadings = await updateReadings(readingsUpdate.query, readingsUpdate.update);
-    console.log(updateReadings);
 
     if ( !updatedReadings ) {
       const readingsBody = {
@@ -82,6 +84,39 @@ export const createArticleHandler = async (
 
     return clientSuccess(res, 201, "Article creation successful.");
 
+  } catch( error ) {
+    return validateError(error, 400, res)
+  }
+}
+
+export const findArticleHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) =>{
+  const searchId = req.query["searchId"];
+  
+  try {
+    const serviceOptions = {
+      query: {
+        searchId
+      },
+      projection: "-_id",
+      populate: {
+        path: "author collaborators",
+        select: "-_id -email -password -writerId"
+      }
+    }
+    const foundArticle: ArticleDocument | null = await findArticle(
+      serviceOptions.query,
+      serviceOptions.projection,
+      serviceOptions.populate
+    );
+
+    if ( !foundArticle ) {
+      return clientError(res, 404);
+    }
+
+    return clientSuccess(res, 200, foundArticle);
   } catch( error ) {
     return validateError(error, 400, res)
   }

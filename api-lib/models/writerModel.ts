@@ -4,8 +4,10 @@ import {
   userBaseModel, 
   UserDocument} from "./userModel";
 import { ArticleDocument } from "./articleModel";
-import bcrypt from "bcrypt";
-
+import "../utils";
+import { 
+  preHashModel, 
+  modelComparePassword } from "./utils";
 
 export interface Writer extends User {
   writerId: string,
@@ -33,27 +35,10 @@ const writerSchema: mongoose.Schema<WriterDocument> = new mongoose.Schema({
   ]
 }, { timestamps: true });
 
-writerSchema.pre("save", async function(this: WriterDocument, next) {
-  if ( !this.isModified("password") ) {
-    return next();
-  }
+writerSchema.pre("save", preHashModel);
 
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(this.password, salt);
-
-  this.password = hash;
-
-  return next();
-})
-
-writerSchema.methods.comparePassword = async function( password: string ): Promise<boolean> {
-  const user = this as WriterDocument;
-
-  try {
-    return await bcrypt.compare(password, user.password);
-  } catch( error ) {
-    return false;
-  } 
+writerSchema.methods.comparePassword = async function( password: string ) {
+  return await modelComparePassword(this as WriterDocument, password);
 }
 
 const WriterModel = mongoose.models?.Writer || mongoose.model<WriterDocument>("Writer", writerSchema);

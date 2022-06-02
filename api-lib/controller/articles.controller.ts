@@ -10,7 +10,7 @@ import { getSession } from "next-auth/react";
 import { findSlicedReadings } from "../service/readings.service";
 
 
-export const getArticlesHandler = async (
+export const findArticlesHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
@@ -34,13 +34,13 @@ export const getArticlesHandler = async (
         serviceOptions.projection,
         serviceOptions.option,
         serviceOptions.populate)
-  
+        
       return clientSuccess(res, 200, articles);
     } 
 
     const serviceOptions = {
         projection: {
-          readings: { $slice: -2 },
+          readings: { $slice: -3 },
           _id: 0
         },
         populate: {

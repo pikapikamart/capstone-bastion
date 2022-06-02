@@ -1,20 +1,23 @@
-import "@/api-lib/models/writerModel";
 import { 
   NextApiRequest,
   NextApiResponse } from "next";
-import { Writer } from "@/api-lib/models/writerModel";
+import { Writer, WriterDocument } from "@/api-lib/models/writerModel";
 import { 
   clientError,
   validateError } from "../utils/errors";
 import { clientSuccess } from "../utils/success";
 import { createWriter, findWriter } from "../service/writer.service";
+import { nanoid } from "nanoid";
 
 
 export const createWriterHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const writerBody: Writer = req.body;
+  const writerBody: Writer = {
+    ...req.body,
+    searchId: nanoid()
+  };
 
   try {
     const writerExistence = await findWriter({ email: writerBody.email });
@@ -38,14 +41,14 @@ export const signInWriterhandler = async(
   const writerBody: Writer = JSON.parse(req.body);
 
   try {
-    const writerExistence = await findWriter({ email: writerBody.email });
+    const foundWriter = await findWriter({ email: writerBody.email });
 
-    if ( !writerExistence ) {
+    if ( !foundWriter ) {
       return clientError(res, 404, "User account not found.")
     }
 
-    const isOwned = await writerExistence.comparePassword(writerBody.password);
-
+    const isOwned = await foundWriter.comparePassword(writerBody.password);
+    
     if ( isOwned ) {
       return clientSuccess(res, 201, "User successfuly authenticated.");
     } else {
@@ -60,16 +63,34 @@ export const findWriterHandler = async(
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const writerBody: Writer = JSON.parse(req.body);
+  const searchId = req.query["searchId"];
   
   try {
-    const writerExistence = await findWriter({ email: writerBody.email });
+    const serviceOptions = {
+      query: {
+        searchId
+      },
+      projection: "-_id -email -password -writerId",
+      populate: {
+        path: "writings",
+        select: "-_id",
+        populate: {
+          path: "collaborators",
+          select: "-_id -email -password -writerId"
+        }
+      }
+    }
+    const foundWriter: WriterDocument | null = await findWriter(
+      serviceOptions.query,
+      serviceOptions.projection,
+      serviceOptions.populate
+    );
 
-    if ( !writerExistence ) {
+    if ( !foundWriter ) {
       return clientError(res, 404, "User account not found.")
     }
-
-    return clientSuccess(res, 200, "User validation success.");
+  
+    return clientSuccess(res, 200, foundWriter);
   } catch( error ) {
     console.log("controller error");
     return validateError(error, 400, res);

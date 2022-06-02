@@ -1,6 +1,8 @@
 import { 
   DocumentDefinition,
   FilterQuery, 
+  PopulateOptions, 
+  ProjectionType, 
   QueryOptions, 
   UpdateQuery} from "mongoose";
 import { 
@@ -8,12 +10,13 @@ import {
   WriterModel, 
   WriterDocument } from "../models/writerModel";
 
-
+// Create wrappers
 export const findWriter = async (
   query: FilterQuery<Writer>,
-  option: QueryOptions = {}
-): Promise<WriterDocument | null> => (
-  WriterModel.findOne(query, option)
+  projection: ProjectionType<Writer> = "",
+  populate?: PopulateOptions
+): Promise<any> => (
+  populate? WriterModel.findOne(query, projection).populate(populate) : WriterModel.findOne(query, projection)
 )
 
 export const createWriter = async (

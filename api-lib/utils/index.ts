@@ -1,9 +1,10 @@
 import { NextApiRequest } from "next";
 import { getSession } from "next-auth/react";
+import { WriterDocument } from "../models/writerModel";
 import { findWriter } from "../service/writer.service";
 
 
-export const getCurrentWriter = async ( req: NextApiRequest ) => {
+export const getCurrentWriter = async ( req: NextApiRequest ): Promise<WriterDocument | false | null> => {
   const writerSession = await getSession({ req });
 
   if ( writerSession && writerSession.user ) {

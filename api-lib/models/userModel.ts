@@ -5,7 +5,8 @@ export interface User {
   firstName: string,
   lastName: string,
   email: string,
-  password: string
+  password: string,
+  searchId: string
 }
 
 export interface UserDocument extends mongoose.Document {
@@ -31,5 +32,8 @@ export const userBaseModel = {
   password: {
     type: String,
     required: true
+  },
+  searchId: {
+    type: String
   }
 }

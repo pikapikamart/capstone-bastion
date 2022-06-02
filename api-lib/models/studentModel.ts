@@ -3,7 +3,9 @@ import {
   User,
   userBaseModel, 
   UserDocument} from "./userModel";
-import bcrypt from "bcrypt";
+import { 
+  preHashModel,
+  modelComparePassword } from "./utils";
 
 
 export interface Student extends User {
@@ -27,28 +29,10 @@ const studentSchema = new mongoose.Schema({
   ]
 }, { timestamps: true });
 
+studentSchema.pre("save", preHashModel);
 
-studentSchema.pre("save", async function(this: StudentDocument, next) {
-  if ( !this.isModified("password") ) {
-    return next();
-  }
-
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(this.password, salt);
-
-  this.password = hash;
-
-  return next();
-})
-
-studentSchema.methods.comparePassword = async function( password: string ): Promise<boolean> {
-  const user = this as StudentDocument;
-
-  try {
-    return await bcrypt.compare(password, user.password);
-  } catch( error ) {
-    return false;
-  } 
+studentSchema.methods.comparePassword = async function( password: string ) {
+  return modelComparePassword(this as StudentDocument, password);
 }
 
 const StudentModel = mongoose.models?.Student || mongoose.model<StudentDocument>("Student", studentSchema);

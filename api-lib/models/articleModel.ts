@@ -3,6 +3,7 @@ import { WriterDocument } from "./writerModel";
 
 
 export interface Article {
+  searchId: string,
   title: string,
   content: string,
   image: string,
@@ -18,6 +19,10 @@ export interface ArticleDocument extends Article, mongoose.Document {
 }
 
 const articleSchema = new mongoose.Schema({
+  searchId: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true
