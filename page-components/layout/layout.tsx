@@ -1,5 +1,6 @@
 import { HTMLHead } from "./head";
 import { GlobalStyles } from "@/styled/theme";
+import { Header } from "@/components/layout/header";
 
 
 interface LayoutChildren{
@@ -12,6 +13,7 @@ const Layout = ({ children } : LayoutChildren) =>{
     <>
       <HTMLHead />
       <GlobalStyles />
+      <Header />
       { children }
     </>
   );

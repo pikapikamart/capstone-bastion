@@ -1,4 +1,4 @@
-import { NextComponentType, NextPage, NextPageContext } from 'next'
+import { NextComponentType, NextPageContext } from 'next'
 import type { AppProps } from 'next/app'
 import { SessionProvider } from "next-auth/react"
 import { ThemeProvider } from 'styled-components'

@@ -10,7 +10,10 @@ declare module "styled-components" {
     darkThree: string,
     greyOne: string,
     greyTwo: string,
-    greyThree: string
+    greyThree: string,
+    whiteOne: string,
+    whiteTwo: string,
+    whiteThree: string,
     },
     fontSizes: {
       homeHero: number,

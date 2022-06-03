@@ -8,7 +8,10 @@ const theme = {
     darkThree: "#292929",
     greyOne: "#4B4B4B",
     greyTwo: "#707070",
-    greyThree: "#959595"
+    greyThree: "#959595",
+    whiteOne: "#FFFFFF",
+    whiteTwo: "#FBFBFB",
+    whiteThree: "#F6F6F4"
   },
   fontSizes: {
     homeHero: 70,
