@@ -4,13 +4,14 @@ import "styled-components";
 declare module "styled-components" {
   export interface DefaultTheme {
     colors: {
-      darkBlue: string,
+    darkBlue: string,
     darkOne: string,
     darkTwo: string,
     darkThree: string,
     greyOne: string,
     greyTwo: string,
     greyThree: string,
+    greyFour: string,
     whiteOne: string,
     whiteTwo: string,
     whiteThree: string,

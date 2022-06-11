@@ -1,24 +1,28 @@
+import Link from "next/link";
 import { useExpansion } from "@/lib/hooks";
 import { SrOnly } from "@/styled/shared/helpers";
-import Link from "next/link";
 import { 
   Wrapper,
   LogoLink,
   LogoImg,
   LogoText, 
-  Navbar,
   Hamburger,
   NavbarContent,
   NavControls,
   NavSocialMedia} from "./header.styled";
 import { MainButton } from "@/styled/shared/collection";
+import { SignUpModal } from "@/components/modal/signup";
 
 
 const Header = () => {
   const { isExpanded, handleExpansion } = useExpansion();
+  const { 
+    isExpanded: signUp, 
+    handleExpansion: handleSignUp } = useExpansion();
 
   return (
     <Wrapper>
+      { signUp && <SignUpModal handleSignUp={ handleSignUp } /> }
       <Link href="/" passHref>
         <LogoLink>
           <LogoImg 
@@ -30,7 +34,7 @@ const Header = () => {
             </LogoText>
         </LogoLink>
       </Link>
-      <Navbar>
+      <nav>
         <Hamburger 
           aria-expanded={ isExpanded }
           onClick={ handleExpansion }>
@@ -42,7 +46,7 @@ const Header = () => {
               <button>Sign In</button>
             </li>
             <li>
-              <MainButton>Get Started</MainButton>
+              <MainButton onClick={ handleSignUp }>Get Started</MainButton>
             </li>
           </NavControls>
           <div>
@@ -54,7 +58,7 @@ const Header = () => {
             </NavSocialMedia>
           </div>
         </NavbarContent>
-      </Navbar>
+      </nav>
     </Wrapper>
   );
 }

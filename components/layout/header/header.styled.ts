@@ -51,13 +51,8 @@ export const LogoText = styled.p`
   `) }
 `
 
-export const Navbar = styled.nav`
-
-`
-
 export const NavbarContent = styled.div`
   align-items: center;
-  background-color: ${ ({theme}) => theme.colors.whiteThree };
   display: none;
   flex-direction: column;
   inset: ${ rem(62) } auto auto 0;
@@ -67,8 +62,14 @@ export const NavbarContent = styled.div`
   position: absolute;
   width: 100%;
 
+  ${ ({theme}) => `
+    background-color: ${ theme.colors.whiteThree };
+    border-bottom: 1px solid ${ theme.colors.darkBlue };
+  ` }
+
   ${ breakpoint("tablet", `
     background-color: transparent;
+    border-bottom: none;
     display: flex;
     flex-direction: row-reverse;
     min-height: revert;
