@@ -25,3 +25,8 @@ export const BorderedButton = styled(BaseButton)`
   border: 1px solid ${ ({theme}) => theme.colors.darkBlue };
   font-size: ${ fluid(15, 3, 16) };
 `
+
+export const CenterItem = styled.div`
+  margin: auto;
+  max-width: max-content;
+`

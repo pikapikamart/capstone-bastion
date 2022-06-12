@@ -25,6 +25,7 @@ import {
   addErrors, 
   removeErrors, 
   validateInput } from "@/lib/utils";
+import { WelcomeModal } from "../welcome";
 
 
 interface SignUpProps {
@@ -42,6 +43,15 @@ interface UserInformation {
   writerId?: string
 }
 
+interface PostData {
+  success: boolean,
+  data?: any,
+  error?: {
+    title: string,
+    error: string
+  }
+}
+
 const SignUp = ( { handleSignUp }: SignUpProps ) =>{
   const [ userType, setUserType ] = useState<UserType>("");
   const [ userInformation, setUserInformation ] = useState<UserInformation>({
@@ -51,6 +61,9 @@ const SignUp = ( { handleSignUp }: SignUpProps ) =>{
     password: ""
   });
   const [ submitForm, setSubmitForm ] = useState(false);
+  const [ postData, setPostData ] = useState<PostData>({
+    success: false,
+  });
   const inputsRef = useRef<HTMLInputElement[]>([]);
   const liveRegion = useRef<HTMLParagraphElement | null>(null);
 
@@ -60,7 +73,7 @@ const SignUp = ( { handleSignUp }: SignUpProps ) =>{
 
     inputsRef.current.map(input => {
       if ( !input ) return;
-
+   
       if ( validateInput(input) ) {
         removeErrors(input);
         setUserInformation(prev => ({
@@ -99,7 +112,10 @@ const SignUp = ( { handleSignUp }: SignUpProps ) =>{
           });
 
           if ( fetchResult.ok ) {
-            
+            setPostData(prev => ({
+              ...prev,
+              success: true
+            }))
           }
         } catch ( error ) {
 
@@ -112,6 +128,11 @@ const SignUp = ( { handleSignUp }: SignUpProps ) =>{
 
   return (
     <BaseModal>
+      { postData.success && userType && (
+        <WelcomeModal 
+          userType={ userType }
+          handleSignUp={ handleSignUp } />
+      ) }
       <Form 
         noValidate
         onSubmit={ handleFormSubmit }>

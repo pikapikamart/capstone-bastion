@@ -151,3 +151,14 @@ export const Input = styled.input`
 export const ControlContainer = styled.div`
   margin-top: ${ rem(32) };
 `
+
+export const DefaultContainer = styled(Form)`
+  max-width: ${ rem(608) };
+  min-height: auto;
+`
+
+export const WelcomeContent = styled.p`
+  line-height: 1.4;
+  margin: ${ fluid(40, 10, 64) } 0 ${ fluid(24, 5, 40) };
+  text-align: center;
+`

@@ -2,7 +2,7 @@
 
 
 module.exports = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
