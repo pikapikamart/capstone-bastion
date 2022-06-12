@@ -12,6 +12,7 @@ import {
   NavSocialMedia} from "./header.styled";
 import { MainButton } from "@/styled/shared/collection";
 import { SignUpModal } from "@/components/modal/signup";
+import { signIn } from "next-auth/react";
 
 
 const Header = () => {
@@ -43,7 +44,7 @@ const Header = () => {
         <NavbarContent>
           <NavControls>
             <li>
-              <button>Sign In</button>
+              <button onClick={ () => signIn() }>Sign In</button>
             </li>
             <li>
               <MainButton onClick={ handleSignUp }>Get Started</MainButton>

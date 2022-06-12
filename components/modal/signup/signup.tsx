@@ -64,14 +64,14 @@ const SignUp = ( { handleSignUp }: SignUpProps ) =>{
   const [ postData, setPostData ] = useState<PostData>({
     success: false,
   });
-  const inputsRef = useRef<HTMLInputElement[]>([]);
+  const inputFields = useRef<HTMLInputElement[]>([]);
   const liveRegion = useRef<HTMLParagraphElement | null>(null);
 
   const handleFormSubmit = ( event: React.FormEvent<HTMLFormElement>) =>{
     event.preventDefault();
     const errorFields: string[] = [];
 
-    inputsRef.current.map(input => {
+    inputFields.current.map(input => {
       if ( !input ) return;
    
       if ( validateInput(input) ) {
@@ -86,7 +86,7 @@ const SignUp = ( { handleSignUp }: SignUpProps ) =>{
       }
     })
 
-    if ( errorFields.length && liveRegion && liveRegion.current ) {
+    if ( errorFields.length && liveRegion.current ) {
       liveRegion.current.textContent = `Form invalid. Please check your ${ errorFields.join(", ") } input ${ errorFields.length>=2? " fields" : " field" }.`;
     } else {
       setSubmitForm(true);
@@ -94,8 +94,8 @@ const SignUp = ( { handleSignUp }: SignUpProps ) =>{
   }
 
   const addInputRef = ( element: HTMLInputElement ) =>{
-    if ( inputsRef && !inputsRef.current.includes(element) ) {
-      inputsRef.current.push(element);
+    if ( inputFields && !inputFields.current.includes(element) ) {
+      inputFields.current.push(element);
     }
   }
 
@@ -103,7 +103,7 @@ const SignUp = ( { handleSignUp }: SignUpProps ) =>{
     if ( submitForm && userType ) {
       const submit = async () =>{
         try {
-          const fetchResult = await fetch(`/api/user/${ userType }`,{
+          const result = await fetch(`/api/user/${ userType }`,{
             headers: {
               "Content-Type": "application/json"
             },
@@ -111,7 +111,7 @@ const SignUp = ( { handleSignUp }: SignUpProps ) =>{
             body: JSON.stringify(userInformation)
           });
 
-          if ( fetchResult.ok ) {
+          if ( result.ok ) {
             setPostData(prev => ({
               ...prev,
               success: true
