@@ -12,7 +12,8 @@ const theme = {
     greyFour: "#BFBFBF",
     whiteOne: "#FFFFFF",
     whiteTwo: "#FBFBFB",
-    whiteThree: "#F6F6F4"
+    whiteThree: "#F6F6F4",
+    red: "#FF0000"
   },
   fontSizes: {
     homeHero: 70,

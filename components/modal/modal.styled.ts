@@ -50,6 +50,7 @@ export const TopControl = styled.button`
 
 export const ContentContainer = styled.div`
   max-width: ${ rem(416) };
+  margin: auto;
   padding-top: ${ fluid(40, 6, 48) };
 `
 
@@ -105,6 +106,18 @@ export const InputLabel = styled.label`
   inset: auto auto ${ rem(16) } 0;
   font-size: ${ fluid(14, 2, 15) };
   position: absolute;
+
+  span {
+    font-size: ${ rem(13) };
+  }
+`
+
+export const InputError = styled.p`
+  color: ${ ({theme}) => theme.colors.red };
+  font-size: ${ fluid(12, 2, 13) };
+  position: absolute;
+  top: calc(100% + ${ rem(2) });
+  visibility: hidden;
 `
 
 export const Input = styled.input`
@@ -125,8 +138,13 @@ export const Input = styled.input`
   &:valid {
 
     & + ${ InputLabel } {
-    color: ${ ({theme}) => theme.colors.greyTwo };
-    transform: translate(-5%, -50%) scale(.85);
+      color: ${ ({theme}) => theme.colors.greyTwo };
+      transform: translate(-5%, -50%) scale(.85);
+    }
+  }
+
+  &[aria-invalid="true"] ~ ${ InputError } {
+    visibility: visible;
   }
 `
 

@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { 
+  useEffect,
+  useRef, 
+  useState } from "react";
 import { BaseModal } from "../";
 import { 
   Form, 
@@ -12,11 +15,16 @@ import {
   InputContainer, 
   Input, 
   InputLabel, 
-  ControlContainer} from "../modal.styled";
+  ControlContainer,
+  InputError } from "../modal.styled";
 import { SrOnly } from "@/styled/shared/helpers";
 import { 
   BorderedButton,
   MainButton } from "@/styled/shared/collection";
+import { 
+  addErrors, 
+  removeErrors, 
+  validateInput } from "@/lib/utils";
 
 
 interface SignUpProps {
@@ -25,21 +33,97 @@ interface SignUpProps {
 
 type UserType = "writer" | "student" | "";
 
+interface UserInformation {
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+  studentId?: string,
+  writerId?: string
+}
+
 const SignUp = ( { handleSignUp }: SignUpProps ) =>{
-  const [ user, setUser ] = useState<UserType>("");
+  const [ userType, setUserType ] = useState<UserType>("");
+  const [ userInformation, setUserInformation ] = useState<UserInformation>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: ""
+  });
+  const [ submitForm, setSubmitForm ] = useState(false);
+  const inputsRef = useRef<HTMLInputElement[]>([]);
+  const liveRegion = useRef<HTMLParagraphElement | null>(null);
 
   const handleFormSubmit = ( event: React.FormEvent<HTMLFormElement>) =>{
     event.preventDefault();
+    const errorFields: string[] = [];
+
+    inputsRef.current.map(input => {
+      if ( !input ) return;
+
+      if ( validateInput(input) ) {
+        removeErrors(input);
+        setUserInformation(prev => ({
+          ...prev,
+          [ input.name ] : input.value
+        }));
+      } else {
+        addErrors(input);
+        errorFields.push(input.name);
+      }
+    })
+
+    if ( errorFields.length && liveRegion && liveRegion.current ) {
+      liveRegion.current.textContent = `Form invalid. Please check your ${ errorFields.join(", ") } input ${ errorFields.length>=2? " fields" : " field" }.`;
+    } else {
+      setSubmitForm(true);
+    }
   }
+
+  const addInputRef = ( element: HTMLInputElement ) =>{
+    if ( inputsRef && !inputsRef.current.includes(element) ) {
+      inputsRef.current.push(element);
+    }
+  }
+
+  useEffect(() =>{
+    if ( submitForm && userType ) {
+      const submit = async () =>{
+        try {
+          const fetchResult = await fetch(`/api/user/${ userType }`,{
+            headers: {
+              "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify(userInformation)
+          });
+
+          if ( fetchResult.ok ) {
+            
+          }
+        } catch ( error ) {
+
+        }
+      }
+
+      submit();
+    }
+  }, [ submitForm ])
 
   return (
     <BaseModal>
       <Form 
         noValidate
         onSubmit={ handleFormSubmit }>
+        <SrOnly 
+          as="p"
+          ref={ liveRegion }
+          aria-live="polite" />
         <TopControls>
-          { user && (
-            <TopControl type="button">
+          { userType && (
+            <TopControl 
+              type="button"
+              onClick={ () => setUserType("") }>
               <SrOnly>Go to previous step</SrOnly>
             </TopControl>
           ) }
@@ -50,57 +134,84 @@ const SignUp = ( { handleSignUp }: SignUpProps ) =>{
           </TopControl>
         </TopControls>
         <Heading>Create your account</Heading>
-        { !user && (
+        { !userType && (
           <UserFieldset>
             <UserLegend>Choose what kind of user you are</UserLegend>
             <UserControlContainer>
-              <BorderedButton onClick={ () => setUser("writer") }>Writer</BorderedButton>
-              <BorderedButton onClick={ () => setUser("student") }>Student</BorderedButton>
+              <BorderedButton onClick={ () => setUserType("writer") }>Writer</BorderedButton>
+              <BorderedButton onClick={ () => setUserType("student") }>Student</BorderedButton>
             </UserControlContainer>
           </UserFieldset>
         ) }
-        { user && (
+        { userType && (
           <ContentContainer>
             <InputContainer>
               <Input
                 type="text"
-                name="firstname"
-                id="firstname"
-                required />
-              <InputLabel htmlFor="firstname">First name</InputLabel>
+                name="firstName"
+                id="firstName"
+                required
+                ref={ addInputRef } />
+              <InputLabel htmlFor="firstName">First name</InputLabel>
+              <InputError id="firstName-error" >please add your first name</InputError>
             </InputContainer>
             <InputContainer>
               <Input
                 type="text"
-                name="lastname"
-                id="lastname"
-                required />
-              <InputLabel htmlFor="lastname">Last name</InputLabel>
+                name="lastName"
+                id="lastName"
+                required
+                ref={ addInputRef } />
+              <InputLabel htmlFor="lastName">Last name</InputLabel>
+              <InputError id="lastName-error" >please add your last name</InputError>
             </InputContainer>
             <InputContainer>
               <Input
                 type="text"
                 name="email"
                 id="email"
-                required />
+                required
+                ref={ addInputRef } />
               <InputLabel htmlFor="email">Email address</InputLabel>
+              <InputError id="email-error" >please enter a proper email address</InputError>
             </InputContainer>
             <InputContainer>
               <Input
                 type="password"
                 name="password"
                 id="password"
-                required />
-              <InputLabel htmlFor="password">Password</InputLabel>
+                required
+                ref={ addInputRef } />
+              <InputLabel htmlFor="password">
+                Password
+                <span> (minimum of 8 characters)</span> 
+              </InputLabel>
+              <InputError id="password-error" >please follor password format</InputError>
             </InputContainer>
-            <InputContainer>
-              <Input
-                type="text"
-                name="studentId"
-                id="studentId"
-                required />
-              <InputLabel htmlFor="studentId">Student Id</InputLabel>
-            </InputContainer>
+            { userType==="student" && (
+              <InputContainer>
+                <Input
+                  type="text"
+                  name="studentId"
+                  id="studentId"
+                  required
+                  ref={ addInputRef } />
+                <InputLabel htmlFor="studentId">Student Id</InputLabel>
+                <InputError id="studentId-error" >please enter a correct student id</InputError>
+              </InputContainer>
+            ) }
+            { userType==="writer" && (
+              <InputContainer>
+                <Input
+                  type="text"
+                  name="writerId"
+                  id="writerId"
+                  required
+                  ref={ addInputRef } />
+                <InputLabel htmlFor="writerId">Writer Id</InputLabel>
+                <InputError id="writerId-error" >please enter a correct writer id</InputError>
+              </InputContainer>
+            ) }
             <ControlContainer>
               <MainButton type="submit">Submit</MainButton>
             </ControlContainer>
