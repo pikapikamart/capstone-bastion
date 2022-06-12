@@ -6,6 +6,7 @@ const theme = {
     darkOne: "#000000",
     darkTwo: "#1D1D1D",
     darkThree: "#292929",
+    darkFour: "#343434",
     greyOne: "#4B4B4B",
     greyTwo: "#707070",
     greyThree: "#959595",
