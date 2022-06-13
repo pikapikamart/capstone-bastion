@@ -83,6 +83,13 @@ export const CreatedAt = styled.p`
 
 export const LikeButton = styled.button`
   display: flex;
+  height: ${ rem(18) };
+  width: ${ rem(20) };
+
+  svg {
+    height: 100%;
+    width: 100%;
+  }
 `
 
 export const ArticleImageHolder = styled.div`

@@ -32,3 +32,8 @@ export const isDividedArticles = ( articles: ArticleData[] | DividedArticles[] )
 
   return ( articles as DividedArticles[] )[0].genre !== undefined;
 }
+
+export const sanitizeArticleLink = ( text: string ) => {
+
+  return text.replace(/[^a-z]+/gi, " ").trim().toLowerCase().split(" ").join("-");
+}

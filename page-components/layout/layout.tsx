@@ -1,6 +1,8 @@
 import { HTMLHead } from "./head";
 import { GlobalStyles } from "@/styled/theme";
 import { Header } from "@/components/layout/header";
+import { SidebarMainContainer } from "./layout.styled";
+import { Sidebar } from "@/components/layout/sidebar";
 
 
 interface LayoutChildren{
@@ -14,7 +16,10 @@ const Layout = ({ children } : LayoutChildren) =>{
       <HTMLHead />
       <GlobalStyles />
       <Header />
-      { children }
+      <SidebarMainContainer>
+        <Sidebar />
+        { children }
+      </SidebarMainContainer>
     </>
   );
 }

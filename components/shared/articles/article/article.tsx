@@ -15,6 +15,7 @@ import {
   Writer as WriterType } from "@/store/tracked";
 import Like from "@/public/icons/icon-heart.svg";
 import Link from "next/link";
+import { sanitizeArticleLink } from "@/lib/utils";
 
 
 interface ArticleProps {
@@ -47,11 +48,6 @@ const getFullDate = ( createdAt: string ) =>{
   return [ month, day, year ].join(" ");
 }
 
-const sanitizeString = ( text: string ) => {
-
-  return text.replace(/[^a-z]+/gi, " ").trim().toLowerCase().split(" ").join("-");
-}
-
 const Article = ( { article }: ArticleProps ) =>{
   
   return (
@@ -60,7 +56,7 @@ const Article = ( { article }: ArticleProps ) =>{
         <Writers>
           <li>
             <Link 
-              href={ `writer/${ (article.author.firstName+article.author.lastName).toLowerCase() }` }
+              href={ `/writer/${ (article.author.firstName+article.author.lastName).toLowerCase() }` }
               passHref >
               <Writer>
                 <WriterImage src={ article.author.image } alt={ writerFullName(article.author) } />
@@ -83,7 +79,7 @@ const Article = ( { article }: ArticleProps ) =>{
         </Writers>
         <Title>
           <Link 
-            href={ `${ sanitizeString(article.title) }-${ article.searchId }` }
+            href={ `/${ sanitizeArticleLink(article.title) }-${ article.searchId }` }
             passHref>
             <a>{ article.title }
             </a>

@@ -2,7 +2,7 @@ import {
   NextApiRequest,
   NextApiResponse
 } from "next";
-import { Article, ArticleDocument } from "@/api-lib/models/articleModel";
+import { Article } from "@/api-lib/models/articleModel";
 import {
   clientError, 
   validateError } from "../utils/errors";
@@ -15,7 +15,7 @@ import { updateWriter } from "../service/writer.service";
 import { 
   createReadings, 
   updateReadings } from "../service/readings.service";
-import { nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
 
 
 export const createArticleHandler = async (
@@ -24,6 +24,7 @@ export const createArticleHandler = async (
 ) => {
   // use a image string returned by filereader
   // send to cloudinary
+  const nanoid = customAlphabet("1234567890TheBastionGroupOfPublicationsprmsuzw", 14);
   const articleBody: Article = {
     ...req.body,
     searchId: nanoid()
