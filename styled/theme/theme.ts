@@ -14,6 +14,7 @@ const theme = {
     whiteOne: "#FFFFFF",
     whiteTwo: "#FBFBFB",
     whiteThree: "#F6F6F4",
+    whiteFive: "#CCCCCC",
     red: "#FF0000"
   },
   fontSizes: {

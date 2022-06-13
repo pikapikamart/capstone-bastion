@@ -16,6 +16,7 @@ declare module "styled-components" {
     whiteOne: string,
     whiteTwo: string,
     whiteThree: string,
+    whiteFive: string,
     red: string
     },
     fontSizes: {

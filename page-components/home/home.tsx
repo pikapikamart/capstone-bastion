@@ -1,11 +1,21 @@
-import { Hero } from "@/components/home/hero";
+import { ArticlesSection } from "@/components/home/articles";
+import { HeroSection } from "@/components/home/hero";
+import { ArticlesReading } from "@/components/shared/articles";
+import { ArticlesData } from "@/store/tracked";
 
 
-const Home = () =>{
+interface HomeProps {
+  articles: ArticlesData
+}
+
+const Home = ( { articles }: HomeProps ) =>{
 
   return (
     <main>
-      <Hero />
+      <HeroSection />
+      <ArticlesSection>
+        <ArticlesReading articles={ articles } />
+      </ArticlesSection>
     </main>
   );
 }

@@ -1,3 +1,4 @@
+import { ArticleData, DividedArticles } from "@/store/tracked";
 
 
 const validateEmail = ( email: string )=>{
@@ -25,4 +26,9 @@ export const validateInput = ( element: HTMLInputElement ) =>{
   }
 
   return element.value!=="";
+}
+
+export const isDividedArticles = ( articles: ArticleData[] | DividedArticles[] ): articles is DividedArticles[] =>{
+
+  return ( articles as DividedArticles[] )[0].genre !== undefined;
 }
