@@ -8,6 +8,7 @@ import {
 
 export const Wrapper = styled.nav`
   align-items: center;
+  background-color: ${ ({theme}) => theme.colors.whiteOne };
   border-top: .5px solid ${ ({theme}) => theme.colors.darkBlue };
   display: flex;
   justify-content: center;
@@ -17,8 +18,9 @@ export const Wrapper = styled.nav`
 
   ${ breakpoint("desktop", `
     border: none;
-    position: static;
+    position: sticky;
     padding: ${ rem(160) } 0 ${ rem(120) };
+    top: 0;
   `) } 
 `
 

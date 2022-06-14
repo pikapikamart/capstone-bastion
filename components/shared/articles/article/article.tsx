@@ -15,7 +15,9 @@ import {
   Writer as WriterType } from "@/store/tracked";
 import Like from "@/public/icons/icon-heart.svg";
 import Link from "next/link";
-import { sanitizeArticleLink } from "@/lib/utils";
+import { 
+  sanitizeArticleLink,
+  getFullDate } from "@/lib/utils";
 
 
 interface ArticleProps {
@@ -30,22 +32,6 @@ const writerFullName = ( writer: WriterType ) => {
 const limitText = ( text: string ) =>{
   
   return text.substring(0, 150) + "...";
-}
-
-const getFullDate = ( createdAt: string ) =>{
-  const date = new Date(createdAt);
-
-  const [
-    day,
-    month,
-    year
-  ] = [
-    date.getDate(),
-    date.toLocaleDateString([], { month: "long" }),
-    date.getFullYear()
-  ]
-
-  return [ month, day, year ].join(" ");
 }
 
 const Article = ( { article }: ArticleProps ) =>{

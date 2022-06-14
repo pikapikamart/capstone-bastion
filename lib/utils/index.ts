@@ -28,6 +28,22 @@ export const validateInput = ( element: HTMLInputElement ) =>{
   return element.value!=="";
 }
 
+export const getFullDate = ( createdAt: string ) =>{
+  const date = new Date(createdAt);
+
+  const [
+    day,
+    month,
+    year
+  ] = [
+    date.getDate(),
+    date.toLocaleDateString([], { month: "long" }),
+    date.getFullYear()
+  ]
+
+  return [ month, day, year ].join(" ");
+}
+
 export const isDividedArticles = ( articles: ArticleData[] | DividedArticles[] ): articles is DividedArticles[] =>{
 
   return ( articles as DividedArticles[] )[0].genre !== undefined;
