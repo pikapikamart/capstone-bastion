@@ -1,4 +1,4 @@
-import { ArticleData, DividedArticles } from "@/store/tracked";
+import { ArticleData, DividedArticles, Writer } from "@/store/tracked";
 
 
 const validateEmail = ( email: string )=>{
@@ -42,6 +42,11 @@ export const getFullDate = ( createdAt: string ) =>{
   ]
 
   return [ month, day, year ].join(" ");
+}
+
+export const writerFullName = ( writer: Writer, spaced: boolean=true ) => {
+
+  return spaced? writer.firstName + " " + writer.lastName : writer.firstName+writer.lastName;
 }
 
 export const isDividedArticles = ( articles: ArticleData[] | DividedArticles[] ): articles is DividedArticles[] =>{

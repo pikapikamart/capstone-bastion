@@ -1,5 +1,5 @@
 import { getFullDate } from "@/lib/utils";
-import { ArticleData } from "@/store/tracked";
+import { ArticleData, Writer } from "@/store/tracked";
 import { 
   ArticleInformationContainer,
   ArticleDate,
@@ -9,12 +9,21 @@ import {
   Text, 
   TextsContainer, 
   Title, 
-  Wrapper } from "./article.styled";
+  Wrapper, 
+  WritersContainer} from "./article.styled";
 import LikeIcon from "@/public/icons/icon-heart.svg";
+import { Writers } from "@/components/shared/writers";
 
 
 interface ArticleProps {
   article: ArticleData
+}
+
+const mergedWriters = ( author: Writer, collaborators: Writer[] ) =>{
+  const writers = Array<Writer>().concat(collaborators);
+  writers.push(author);
+
+  return writers;
 }
 
 const Article = ( { article }: ArticleProps ) =>{
@@ -41,6 +50,11 @@ const Article = ( { article }: ArticleProps ) =>{
           </div>
         </ContentContainer>
       </ArticleInformationContainer>
+      <WritersContainer>
+        <Writers writers={ mergedWriters(article.author, article.collaborators) }>
+          Writers
+        </Writers>
+      </WritersContainer>
     </Wrapper>
   );
 }

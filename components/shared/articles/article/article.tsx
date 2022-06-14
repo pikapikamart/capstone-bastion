@@ -10,23 +10,17 @@ import {
   Writer, 
   WriterImage, 
   Writers } from "./article.styled";
-import { 
-  ArticleData, 
-  Writer as WriterType } from "@/store/tracked";
+import { ArticleData } from "@/store/tracked";
 import Like from "@/public/icons/icon-heart.svg";
 import Link from "next/link";
 import { 
   sanitizeArticleLink,
-  getFullDate } from "@/lib/utils";
+  getFullDate,
+  writerFullName } from "@/lib/utils";
 
 
 interface ArticleProps {
   article: ArticleData
-}
-
-const writerFullName = ( writer: WriterType ) => {
-
-  return writer.firstName + " " + writer.lastName;
 }
 
 const limitText = ( text: string ) =>{
@@ -42,7 +36,7 @@ const Article = ( { article }: ArticleProps ) =>{
         <Writers>
           <li>
             <Link 
-              href={ `/writer/${ (article.author.firstName+article.author.lastName).toLowerCase() }` }
+              href={ `/writer/${ (writerFullName(article.author, false)).toLowerCase() }` }
               passHref >
               <Writer>
                 <WriterImage src={ article.author.image } alt={ writerFullName(article.author) } />
@@ -53,7 +47,7 @@ const Article = ( { article }: ArticleProps ) =>{
           { article.collaborators.map(writer => (
             <li key={ article.searchId + writer.searchId }>
               <Link
-                href={ `writer/${ (article.author.firstName+article.author.lastName).toLowerCase() }` }
+                href={ `writer/${ writerFullName(writer, false).toLowerCase() }` }
                 passHref>
                 <Writer>
                   <WriterImage src={ writer.image } alt={ writerFullName(writer) } />

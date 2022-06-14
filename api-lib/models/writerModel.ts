@@ -12,6 +12,7 @@ import {
 export interface Writer extends User {
   writerId: string,
   image: string,
+  bio?: string,
   writings: ArticleDocument["_id"][]
 }
 
@@ -25,6 +26,9 @@ const writerSchema: mongoose.Schema<WriterDocument> = new mongoose.Schema({
     unique: true
   },
   image: {
+    type: String
+  },
+  bio: {
     type: String
   },
   writings: [

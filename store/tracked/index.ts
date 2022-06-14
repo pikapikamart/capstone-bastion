@@ -6,7 +6,8 @@ export interface Writer {
   lastName: string,
   searchId: string,
   writings?: ArticleData[],
-  image: string
+  image: string,
+  bio?: string
 }
 
 export interface ArticleData {
