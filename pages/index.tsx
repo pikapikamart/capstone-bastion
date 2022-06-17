@@ -1,24 +1,26 @@
 import { 
-  GetStaticPropsContext, 
+  GetServerSidePropsContext,
   InferGetStaticPropsType, 
   NextPage } from "next";
-import { HomePage } from "@/page-components/home";
-import { 
-  ArticlesData, 
-  ResultJson } from "@/store/tracked";
+import { RootPage } from "@/page-components/root";
+import { DividedArticles } from "@/store/tracked";
 import { HTMLHead } from "@/page-components/layout/head";
 import { GlobalStyles } from "@/styled/theme";
 import { Header } from "@/components/layout/header";
+import { articlesServiceOptions } from "@/api-lib/controller/options";
+import { findSlicedReadings } from "@/api-lib/service/readings.service";
+import { getSession } from "next-auth/react";
+import { connectDatabase } from "@/api-lib/db";
 
 
-type HomePage<T> = NextPage<T> & {
+type RootPageT<T> = NextPage<T> & {
   getLayout: ( page: React.ReactElement ) => React.ReactNode
 }
 
-const Home: HomePage<InferGetStaticPropsType<typeof getStaticProps>> = ( { articles } ) =>{
+const Home: RootPageT<InferGetStaticPropsType<typeof getServerSideProps>> = ( { articles } ) =>{
   
   return (
-    <HomePage articles={ articles } />
+    <RootPage articles={ articles } />
   )
 }
 
@@ -34,14 +36,19 @@ Home.getLayout = ( page: React.ReactElement ) =>{
   )
 }
 
-export const getStaticProps = async ( context: GetStaticPropsContext ) =>{
-  // Fetching becase default controller code checks authentication
-  const result = await fetch(process.env.SITE_URL + "/api/articles");
-  const jsonresult: ResultJson = await result.json();
-  
+export const getServerSideProps = async ( context: GetServerSidePropsContext ) =>{
+  await connectDatabase(null, null, null);
+  const {
+    projection,
+    populate
+  } = articlesServiceOptions.signedOut;
+  const foundArticles = await findSlicedReadings(projection, populate);
+  const session = await getSession(context);
+
   return {
     props: {
-      articles: jsonresult.data as ArticlesData
+      articles: JSON.parse(JSON.stringify(foundArticles)) as DividedArticles[],
+      session
     }
   }
 }

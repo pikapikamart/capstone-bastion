@@ -27,8 +27,6 @@ export interface DividedArticles {
   readings: ArticleData[]
 }
 
-export type ArticlesData = DividedArticles[] | ArticleData[];
-
 export interface ResultJson {
   status: number,
   data: any

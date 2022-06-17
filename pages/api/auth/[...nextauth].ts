@@ -53,6 +53,8 @@ const NextProviders = [
         const isOwned = await userExistence.comparePassword(user.password as string);
 
         if ( isOwned ) {
+          user.password = "";
+          
           return user;
         }
       } 
@@ -72,6 +74,7 @@ const NextCallbacks = {
         password: token.password
       }
     }
+    
     return newSession;
   },
   async jwt({ token, account, user }: NextCallbackJWT) {

@@ -44,7 +44,7 @@ const Header = () => {
         <NavbarContent>
           <NavControls>
             <li>
-              <button onClick={ () => signIn() }>Sign In</button>
+              <button onClick={ () => signIn(undefined, { callbackUrl: "/home" }) }>Sign In</button>
             </li>
             <li>
               <MainButton onClick={ handleSignUp }>Get Started</MainButton>

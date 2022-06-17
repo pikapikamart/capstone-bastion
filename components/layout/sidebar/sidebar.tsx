@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+import Link from "next/link";
 import { 
   NavIconHolder,
   Navlink, 
@@ -7,20 +9,19 @@ import NavHome from "@/public/icons/icon-nav-home.svg";
 import NavLikes from "@/public/icons/icon-nav-likes.svg";
 import NavWriters from "@/public/icons/icon-nav-writers.svg";
 import NavNotifications from "@/public/icons/icon-nav-notification.svg";
-import Link from "next/link";
 import { SrOnly } from "@/styled/shared/helpers";
 
 
-
 const Sidebar = () =>{
+  const currentPath = useRouter().pathname.slice(1);
 
   return (
     <Wrapper aria-label="primary">
       <Navlist>
         <Link 
-          href="/"
+          href="/home"
           passHref>
-            <Navlink>
+            <Navlink aria-current={ currentPath==="home"? "page" : undefined }>
               <NavIconHolder>
                 <NavHome aria-hidden="true" />
               </NavIconHolder>
@@ -30,7 +31,7 @@ const Sidebar = () =>{
         <Link 
           href="/likedArticles"
           passHref>
-            <Navlink>
+            <Navlink aria-current={ currentPath==="likedArticles"? "page" : undefined }>
               <NavIconHolder>
                 <NavLikes aria-hidden="true" />
               </NavIconHolder>
@@ -40,7 +41,7 @@ const Sidebar = () =>{
         <Link 
           href="/followings"
           passHref>
-            <Navlink>
+            <Navlink aria-current={ currentPath==="followings"? "page" : undefined }>
               <NavIconHolder>
                 <NavWriters aria-hidden="true" />
               </NavIconHolder>
@@ -50,7 +51,7 @@ const Sidebar = () =>{
         <Link 
           href="/notifications"
           passHref>
-            <Navlink>
+            <Navlink aria-current={ currentPath==="notifications"? "page" : undefined }>
               <NavIconHolder>
                 <NavNotifications aria-hidden="true" />
               </NavIconHolder>
