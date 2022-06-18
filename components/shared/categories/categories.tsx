@@ -8,10 +8,14 @@ import {
 import { categoryList } from "./data";
 
 
-const Categories = () =>{
+interface CategoriesProps {
+  reversed?: boolean
+}
+
+const Categories = ( { reversed=false }: CategoriesProps ) =>{
 
   return (
-    <Wrapper>
+    <Wrapper isReversed={ reversed } >
       <Heading>Read what interests you</Heading>
       <CategoryList>
         { categoryList.map(category => (

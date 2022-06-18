@@ -30,3 +30,49 @@ export const CenterItem = styled.div`
   margin: auto;
   max-width: max-content;
 `
+
+export const SignedHeading = styled.h1`
+  margin-bottom: ${ rem(8) };
+
+  ${ ({theme}) => `
+    color: ${ theme.colors.darkTwo };
+    font-size: ${ fluid(28, 4, theme.fontSizes.headingLarge) };
+  ` }
+`
+
+export const GreyOneMedium = styled.p`
+  ${ ({theme}) => `
+    color: ${ theme.colors.greyOne };
+    font-size: ${ fluid(theme.fontSizes.textMedium, 2.3, theme.fontSizes.default) };
+  ` }
+`
+
+export const TabbedInterface = styled.div`
+  display: flex;
+  margin-bottom: ${ rem(40) };
+`
+
+export const TabControl = styled.button`
+  font-weight: 500;
+  padding-right: ${ rem(32) };
+  position: relative;
+
+  ${ ({theme}) => `
+    color: ${ theme.colors.greyTwo };
+    font-size: ${ rem(theme.fontSizes.default) };
+
+    &[aria-selected="true"] {
+      color: ${ theme.colors.darkTwo };
+
+      &::before {
+        content: "";
+        border-radius: 3px;
+        background-color: ${ theme.colors.darkBlue };
+        height: 1.5px;
+        inset: auto auto ${ rem(-2) } 0;
+        position: absolute;
+        width: 100%;
+      }
+    }
+  ` }
+`

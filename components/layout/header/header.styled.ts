@@ -8,12 +8,16 @@ import {
 
 export const Wrapper = styled.header`
   align-items: center;
-  border-bottom: 1px solid ${ ({theme}) => theme.colors.darkBlue };
   display: flex;
   justify-content: space-between;
   min-height: ${ fluid(62, 10, 72) };
   padding: 0 ${ rem(16) };
   position: relative;
+
+  ${ ({theme}) => `
+    background-color: ${ theme.colors.whiteOne };
+    border-bottom: 1px solid ${ theme.colors.darkBlue };
+  ` }
 
   ${ breakpoint("tablet", `
     padding: 0 ${ fluid(40, 7.3, 96) };
@@ -61,6 +65,7 @@ export const NavbarContent = styled.div`
   padding-top: ${ rem(64) };
   position: absolute;
   width: 100%;
+  z-index: 25;
 
   ${ ({theme}) => `
     background-color: ${ theme.colors.whiteThree };

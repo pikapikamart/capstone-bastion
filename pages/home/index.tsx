@@ -9,6 +9,7 @@ import { findArticles } from "@/api-lib/service/articles.service";
 import { articlesServiceOptions } from "@/api-lib/controller/options";
 import { ArticleData } from "@/store/tracked";
 import { connectDatabase } from "@/api-lib/db";
+import { HomePage } from "@/page-components/home";
 
 
 const Home: NextPage<InferGetStaticPropsType<typeof getServerSideProps>> = ( { articles } ) =>{
@@ -22,7 +23,7 @@ const Home: NextPage<InferGetStaticPropsType<typeof getServerSideProps>> = ( { a
   }, [ data ])
 
   return (
-    <div></div>
+    <HomePage articles={ articles } />
   );
 }
 

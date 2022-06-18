@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   rem,
   fluid,
@@ -6,13 +6,21 @@ import {
 } from "@/styled/functions";
 
 
-export const Wrapper = styled.div`
-  margin-bottom: ${ rem(32) };
+interface WrapperProps {
+  isReversed?: boolean
+}
 
-  ${ breakpoint("tablet", `
-    max-width: ${ rem(152) };
-    margin-right: ${ rem(16) };
-  `) }
+export const Wrapper = styled.div<WrapperProps>`
+  margin-bottom: ${ rem(32) };
+  position: sticky;
+  top: ${ rem(136) };
+
+  ${ ({isReversed}) => `
+    ${ breakpoint("tablet", `
+      max-width: ${ rem(152) };
+      margin: 0 ${ isReversed? 0 : rem(16) } 0 ${ isReversed? fluid(16, 3, 40): 0 };
+    `) }
+  ` }
 
   ${ breakpoint("desktop", `
     flex-basis: 100%;

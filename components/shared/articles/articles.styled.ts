@@ -8,10 +8,6 @@ import {
 
 export const Wrapper = styled.div`
   max-width: ${ rem(826) };
-
-  ${ breakpoint("tablet", `
-    display: flex;
-  `) }
 `
 
 export const ContentContainer = styled.div`

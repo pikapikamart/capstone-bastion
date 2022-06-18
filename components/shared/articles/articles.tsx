@@ -11,10 +11,14 @@ import { ArticleList } from "./list";
 
 
 interface ArticlesProps {
+  children?: React.ReactNode,
   articles: ArticleData[] | DividedArticles[]
 }
 
-const Articles = ( { articles }: ArticlesProps ) =>{
+const Articles = ( {
+  children,
+  articles
+}: ArticlesProps ) =>{
   
   return (
     <Wrapper>
@@ -26,6 +30,8 @@ const Articles = ( { articles }: ArticlesProps ) =>{
           <ArticleList articles={ readings.readings } />
         </ContentContainer>
       )) }
+      { !isDividedArticles(articles) && <ArticleList articles={ articles } /> }
+      { children }
     </Wrapper>
   )
 }
