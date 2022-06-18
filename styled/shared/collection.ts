@@ -76,3 +76,19 @@ export const TabControl = styled.button`
     }
   ` }
 `
+
+export const Relative = styled.div`
+  position: relative;
+`
+
+interface TextMedium {
+  color: string
+}
+
+export const TextMedium = styled.p<TextMedium>`
+
+  ${ ({ theme, color }) => `
+    color: ${ theme.colors[color] };
+    font-size: ${ rem(theme.fontSizes.textMedium) };
+  ` }
+`

@@ -12,14 +12,15 @@ interface WrapperProps {
 
 export const Wrapper = styled.div<WrapperProps>`
   margin-bottom: ${ rem(32) };
-  position: sticky;
-  top: ${ rem(136) };
+  
 
   ${ ({isReversed}) => `
     ${ breakpoint("tablet", `
       max-width: ${ rem(152) };
       margin: 0 ${ isReversed? 0 : rem(16) } 0 ${ isReversed? fluid(16, 3, 40): 0 };
-    `) }
+      position: sticky;
+      top: ${ rem(136) };
+      `) }
   ` }
 
   ${ breakpoint("desktop", `

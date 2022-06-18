@@ -1,6 +1,18 @@
 
 
-const theme = {
+interface Theme {
+  colors: {
+    [ key: string ]: string
+  },
+  fontSizes: {
+    [ key: string ]: number
+  },
+  breakpoints: {
+    [ key: string ]: number
+  }
+}
+
+const theme: Theme = {
   colors: {
     darkBlue: "#00243A",
     darkOne: "#000000",

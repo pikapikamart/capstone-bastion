@@ -148,3 +148,85 @@ export const NavControls = styled.ul`
 export const NavSocialMedia = styled.a`
   display: block;
 `
+
+export const UserNavbar = styled.nav`
+  align-items: center;
+  display: flex;
+`
+
+export const FirstName = styled.p`
+  margin-right: ${ rem(12) };
+
+  ${ ({theme}) => `
+    color: ${ theme.colors.darkThree };
+    font-size: ${ fluid(theme.fontSizes.linkOne, 2, theme.fontSizes.default) };
+  ` }
+
+  span {
+    font-weight: 600;
+  }
+`
+
+export const UserImage = styled.img`
+  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, .35);
+  border-radius: 50%;
+  height: ${ fluid(32, 7, 40) };
+  width: ${ fluid(32, 7, 40) };
+`
+
+export const UserDropdown = styled.div`
+  background-color: ${ ({theme}) => theme.colors.whiteOne };
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, .7);
+  border-radius: ${ rem(2) };
+  inset: calc(100% + ${ rem(24) }) 0 auto auto;
+  min-width: ${ rem(296) };
+  position: absolute;
+
+  &::before {
+    content: "";
+    background: url("/icons/dropdown-point.svg") no-repeat center center;
+    height: ${ rem(22) };
+    inset: ${ rem(2) } ${ rem(12) } auto auto;
+    position: absolute;
+    transform: translateY(-100%);
+    width: ${ rem(32) };
+  }
+
+  &::after {
+    content: "";
+    background-color: inherit;
+    height: ${ rem(10) };
+    inset: 0 ${ rem(2) } auto auto;
+    position: absolute;
+    width: ${ rem(70) };
+    z-index: 50;
+  }
+`
+
+export const UserProfile = styled.a`
+  align-items: center;
+  border-bottom: 1px solid ${({theme}) => theme.colors.whiteFive};
+  display: grid;
+  gap: 0 ${ rem(12) }; 
+  grid-template-columns: max-content auto;
+  min-height: ${ rem(88) };
+  padding-left: ${ rem(20) };
+  width: 100%;
+`
+
+export const UserName = styled.p`
+  color: ${ ({theme}) => theme.colors.darkOne };
+  font-weight: 500;
+  margin-bottom: ${ rem(4) };
+`
+
+export const Signout = styled.button`
+  padding: ${ rem(16) } 0 ${ rem(16) } ${ rem(24) };
+  text-align: left;
+  width: 100%;
+
+  ${ ({theme}) => `
+    color: ${ theme.colors.greyOne };
+    font-size: ${ rem(theme.fontSizes.default) };
+  `}
+`

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <filter id="Ellipse_4" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-opacity="0.2"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Avatar" transform="translate(-1273 -12)">
+    <g transform="matrix(1, 0, 0, 1, 1273, 12)" filter="url(#Ellipse_4)">
+      <circle id="Ellipse_4-2" data-name="Ellipse 4" cx="20" cy="20" r="20" transform="translate(10 10)" fill="#00243a"/>
+    </g>
+    <g id="avatar-2" data-name="avatar" transform="translate(1285 26)">
+      <g id="ic_fluent_person_48_regular" transform="translate(8 4)">
+        <path id="_-Color" data-name="🎨-Color" d="M24.65,18.4A2.549,2.549,0,0,1,27.2,20.826l0,.124V21.4a5.716,5.716,0,0,1-2.952,5.028A12.956,12.956,0,0,1,17.6,28a12.956,12.956,0,0,1-6.648-1.572A5.722,5.722,0,0,1,8,21.6l0-.2v-.451A2.549,2.549,0,0,1,10.426,18.4l.124,0Zm0,1.5H10.55a1.05,1.05,0,0,0-1.046.963l0,.086V21.4a4.222,4.222,0,0,0,2.232,3.747A11.49,11.49,0,0,0,17.6,26.5a11.49,11.49,0,0,0,5.868-1.353A4.228,4.228,0,0,0,25.7,21.575l0-.175v-.451a1.049,1.049,0,0,0-.964-1.046ZM17.6,4a6,6,0,1,1-6,6A6,6,0,0,1,17.6,4Zm0,1.5A4.5,4.5,0,1,0,22.1,10,4.5,4.5,0,0,0,17.6,5.5Z" transform="translate(-8 -4)" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

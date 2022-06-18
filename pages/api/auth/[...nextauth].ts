@@ -33,10 +33,13 @@ const NextProviders = [
       password: { label: "Password", type: "password" }
     },
     async authorize(credentials, req) {
-      const user = {
+      const user  = {
         userType: credentials?.userType,
         email: credentials?.email,
-        password: credentials?.password
+        password: credentials?.password,
+        image: "",
+        firstName: "",
+        lastName: ""
       }
       let userExistence: WriterDocument | StudentDocument | null = null;
 
@@ -52,9 +55,19 @@ const NextProviders = [
       if ( userExistence ) {
         const isOwned = await userExistence.comparePassword(user.password as string);
 
+        const isWriter = ( user: WriterDocument | StudentDocument ): user is WriterDocument =>{
+          return (user as WriterDocument).image !== undefined;
+        }
+
         if ( isOwned ) {
           user.password = "";
+          user.firstName = userExistence.firstName,
+          user.lastName = userExistence.lastName;
           
+          if ( isWriter(userExistence) ) {
+            user.image = userExistence.image;
+          }
+
           return user;
         }
       } 
@@ -71,18 +84,24 @@ const NextCallbacks = {
       user: {
         ...session.user,
         userType: token.userType,
-        password: token.password
+        password: token.password,
+        image: token.image,
+        firstName: token.firstName,
+        lastName: token.lastName
       }
     }
     
     return newSession;
   },
   async jwt({ token, account, user }: NextCallbackJWT) {
-
+    
     if (user) {
       token.accessToken = account.access_token;
       token.userType = user.userType;
       token.password = user.password;
+      token.image = user.image;
+      token.firstName = user.firstName,
+      token.lastName = user.lastName
     }
 
     return token;
