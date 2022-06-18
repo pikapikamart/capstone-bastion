@@ -12,7 +12,7 @@ declare module "next-auth" {
       userType?: string | null,
       firstName?: string | null,
       lastName?: string | null,
-      password?: string | null
+      username?: string | null
   };
   expires: ISODateString;
   }

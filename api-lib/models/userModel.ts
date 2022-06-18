@@ -6,7 +6,7 @@ export interface User {
   lastName: string,
   email: string,
   password: string,
-  searchId: string
+  username: string
 }
 
 export interface UserDocument extends mongoose.Document {
@@ -33,7 +33,9 @@ export const userBaseModel = {
     type: String,
     required: true
   },
-  searchId: {
-    type: String
+  username: {
+    type: String,
+    required: true,
+    unique: true
   }
 }

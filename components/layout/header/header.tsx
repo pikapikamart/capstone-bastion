@@ -38,7 +38,9 @@ const Header = () => {
   return (
     <Wrapper>
       { signUp && <SignUpModal handleSignUp={ handleSignUp } /> }
-      <Link href="/" passHref>
+      <Link 
+        href={ data? "/home" : "/" }
+        passHref>
         <LogoLink>
           <LogoImg 
             src="/icons/logo.png"
@@ -92,7 +94,7 @@ const Header = () => {
             { userExpanded && (
               <UserDropdown>
                 <Link 
-                  href="/home"
+                  href={`/writer/${ data.user.username }`}
                   passHref>
                     <UserProfile>
                       <UserImage

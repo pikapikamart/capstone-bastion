@@ -7,17 +7,14 @@ import {
 import { clientSuccess } from "../utils/success";
 import { Student } from "@/api-lib/models/studentModel";
 import { createStudent, findStudent } from "../service/student.service";
-import { nanoid } from "nanoid";
 
 
 export const createStudentHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const studentBody: Student = {
-    ...req.body,
-    searchId: nanoid()
-  };
+  const studentBody: Student = req.body;
+  studentBody.username = studentBody.email.split("@")[0];
 
   try {
     const foundStudent = await findStudent({ email: studentBody.email });

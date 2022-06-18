@@ -28,3 +28,15 @@ export const articlesServiceOptions = {
     }
   }
 }
+
+export const writerServiceOptions = {
+  projection: "-_id -email -password -writerId",
+  populate: {
+    path: "writings",
+    select: "-_id",
+    populate: {
+      path: "collaborators author",
+      select: "-_id -email -password -writerId"
+    }
+  }
+}

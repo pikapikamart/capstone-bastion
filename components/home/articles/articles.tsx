@@ -1,9 +1,13 @@
-import { TabbedInterface, TabControl } from "@/styled/shared/collection";
-import { ContentContainer, Wrapper } from "./articles.styled";
+import { 
+  TabbedInterface, 
+  TabControl } from "@/styled/shared/collection";
+import { 
+  ContentContainer, 
+  Wrapper } from "./articles.styled";
 
 
 interface ArticlesProps {
-  children?: React.ReactNode
+  children: React.ReactNode
 }
 
 const Articles = ( { children }: ArticlesProps ) =>{

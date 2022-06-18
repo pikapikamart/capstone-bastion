@@ -36,10 +36,10 @@ const NextProviders = [
       const user  = {
         userType: credentials?.userType,
         email: credentials?.email,
-        password: credentials?.password,
         image: "",
         firstName: "",
-        lastName: ""
+        lastName: "",
+        username: ""
       }
       let userExistence: WriterDocument | StudentDocument | null = null;
 
@@ -53,17 +53,17 @@ const NextProviders = [
       }
 
       if ( userExistence ) {
-        const isOwned = await userExistence.comparePassword(user.password as string);
+        const isOwned = await userExistence.comparePassword(credentials?.password as string);
 
         const isWriter = ( user: WriterDocument | StudentDocument ): user is WriterDocument =>{
           return (user as WriterDocument).image !== undefined;
         }
 
         if ( isOwned ) {
-          user.password = "";
           user.firstName = userExistence.firstName,
           user.lastName = userExistence.lastName;
-          
+          user.username = userExistence.username;
+
           if ( isWriter(userExistence) ) {
             user.image = userExistence.image;
           }
@@ -84,10 +84,10 @@ const NextCallbacks = {
       user: {
         ...session.user,
         userType: token.userType,
-        password: token.password,
         image: token.image,
         firstName: token.firstName,
-        lastName: token.lastName
+        lastName: token.lastName,
+        username: token.username
       }
     }
     
@@ -98,10 +98,10 @@ const NextCallbacks = {
     if (user) {
       token.accessToken = account.access_token;
       token.userType = user.userType;
-      token.password = user.password;
       token.image = user.image;
-      token.firstName = user.firstName,
-      token.lastName = user.lastName
+      token.firstName = user.firstName;
+      token.lastName = user.lastName;
+      token.username = user.username;
     }
 
     return token;

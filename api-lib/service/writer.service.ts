@@ -24,7 +24,6 @@ export const findWriter = async (
   return find()
 }
 
-
 export const createWriter = async (
   writerInfo: DocumentDefinition<Writer>
 ): Promise<WriterDocument> => (

@@ -1,18 +1,6 @@
 
 
-interface Theme {
-  colors: {
-    [ key: string ]: string
-  },
-  fontSizes: {
-    [ key: string ]: number
-  },
-  breakpoints: {
-    [ key: string ]: number
-  }
-}
-
-const theme: Theme = {
+const theme = {
   colors: {
     darkBlue: "#00243A",
     darkOne: "#000000",
@@ -48,6 +36,5 @@ const theme: Theme = {
     desktop: 1000
   }
 }
-
 
 export default theme;

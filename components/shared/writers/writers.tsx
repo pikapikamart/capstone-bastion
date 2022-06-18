@@ -1,6 +1,3 @@
-import { writerFullName } from "@/lib/utils";
-import { Writer as WriterType } from "@/store/tracked";
-import Link from "next/link";
 import { 
   Bio,
   Heading, 
@@ -9,6 +6,9 @@ import {
   Wrapper, 
   Writer, 
   WriterList } from "./writers.styled"
+import { writerFullName } from "@/lib/utils";
+import { Writer as WriterType } from "@/store/tracked";
+import Link from "next/link";
 
 
 interface WriterProps {
@@ -26,7 +26,7 @@ const Writers = ( {
       <Heading>{ children }</Heading>
       <WriterList>
         { writers.map(writer => (
-          <Writer key={ writer.searchId }>
+          <Writer key={ writer.username }>
             <div>
               <Image 
                 src={ writer.image }

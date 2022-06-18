@@ -1,0 +1,1 @@
+export { default as WriterPage } from "./writer";

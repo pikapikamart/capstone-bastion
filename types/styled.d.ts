@@ -4,20 +4,21 @@ import "styled-components";
 declare module "styled-components" {
   export interface DefaultTheme {
     colors: {
-    darkBlue: string,
-    darkOne: string,
-    darkTwo: string,
-    darkThree: string,
-    darkFour: string,
-    greyOne: string,
-    greyTwo: string,
-    greyThree: string,
-    greyFour: string,
-    whiteOne: string,
-    whiteTwo: string,
-    whiteThree: string,
-    whiteFive: string,
-    red: string
+      [ key: string ] : string,
+      darkBlue: string,
+      darkOne: string,
+      darkTwo: string,
+      darkThree: string,
+      darkFour: string,
+      greyOne: string,
+      greyTwo: string,
+      greyThree: string,
+      greyFour: string,
+      whiteOne: string,
+      whiteTwo: string,
+      whiteThree: string,
+      whiteFive: string,
+      red: string
     },
     fontSizes: {
       homeHero: number,

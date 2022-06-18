@@ -1,11 +1,13 @@
-export const dummy = 1;
 
 
-export interface Writer {
+interface UserBody {
   firstName: string,
   lastName: string,
-  searchId: string,
-  writings?: ArticleData[],
+  username: string
+}
+
+export interface Writer extends UserBody{
+  writings: ArticleData[],
   image: string,
   bio?: string
 }

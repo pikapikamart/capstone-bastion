@@ -1,23 +1,21 @@
 import { 
   NextApiRequest,
   NextApiResponse } from "next";
-import { Writer, WriterDocument } from "@/api-lib/models/writerModel";
+import { Writer } from "@/api-lib/models/writerModel";
 import { 
   clientError,
   validateError } from "../utils/errors";
 import { clientSuccess } from "../utils/success";
 import { createWriter, findWriter } from "../service/writer.service";
-import { nanoid } from "nanoid";
+import { writerServiceOptions } from "./options";
 
 
 export const createWriterHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const writerBody: Writer = {
-    ...req.body,
-    searchId: nanoid()
-  };
+  const writerBody: Writer = req.body;
+  writerBody.username = writerBody.email.split("@")[0];
 
   try {
     const foundWriter = await findWriter({ email: writerBody.email });
@@ -63,23 +61,16 @@ export const findWriterHandler = async(
   req: NextApiRequest,
   res: NextApiResponse
 ) =>{
-  const searchId = req.query["searchId"];
+  const username = req.query["username"];
   
   try {
     const serviceOptions = {
+      ...writerServiceOptions,
       query: {
-        searchId
-      },
-      projection: "-_id -email -password -writerId",
-      populate: {
-        path: "writings",
-        select: "-_id",
-        populate: {
-          path: "collaborators",
-          select: "-_id -email -password -writerId"
-        }
+        username
       }
     }
+
     const foundWriter = await findWriter(
       serviceOptions.query,
       serviceOptions.projection,
@@ -92,7 +83,6 @@ export const findWriterHandler = async(
   
     return clientSuccess(res, 200, foundWriter);
   } catch( error ) {
-    console.log("controller error");
     return validateError(error, 400, res);
   }
 }

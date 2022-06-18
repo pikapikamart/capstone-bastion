@@ -36,7 +36,7 @@ const Article = ( { article }: ArticleProps ) =>{
         <Writers>
           <li>
             <Link 
-              href={ `/writer/${ (writerFullName(article.author, false)).toLowerCase() }` }
+              href={ `/writer/${ article.author.username }` }
               passHref >
               <Writer>
                 <WriterImage src={ article.author.image } alt={ writerFullName(article.author) } />
@@ -47,7 +47,7 @@ const Article = ( { article }: ArticleProps ) =>{
           { article.collaborators.map(writer => (
             <li key={ article.searchId + writer.searchId }>
               <Link
-                href={ `writer/${ writerFullName(writer, false).toLowerCase() }` }
+                href={ `writer/${ writer.username }` }
                 passHref>
                 <Writer>
                   <WriterImage src={ writer.image } alt={ writerFullName(writer) } />

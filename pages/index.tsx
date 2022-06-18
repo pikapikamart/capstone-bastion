@@ -9,8 +9,12 @@ import { GlobalStyles } from "@/styled/theme";
 import { Header } from "@/components/layout/header";
 import { articlesServiceOptions } from "@/api-lib/controller/options";
 import { findSlicedReadings } from "@/api-lib/service/readings.service";
-import { getSession } from "next-auth/react";
+import { 
+  getSession, 
+  useSession } from "next-auth/react";
 import { connectDatabase } from "@/api-lib/db";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 
 type RootPageT<T> = NextPage<T> & {
@@ -18,7 +22,15 @@ type RootPageT<T> = NextPage<T> & {
 }
 
 const Home: RootPageT<InferGetStaticPropsType<typeof getServerSideProps>> = ( { articles } ) =>{
-  
+  const { data } = useSession();
+  const router = useRouter();
+
+  useEffect(() =>{
+    if ( data ) {
+      router.push("/home");
+    }
+  }, [])
+
   return (
     <RootPage articles={ articles } />
   )

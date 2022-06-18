@@ -48,8 +48,10 @@ export const GreyOneMedium = styled.p`
 `
 
 export const TabbedInterface = styled.div`
+  border-bottom: 2px solid rgba(0, 0, 0, .1);
   display: flex;
   margin-bottom: ${ rem(40) };
+  max-width: ${ rem(256) };
 `
 
 export const TabControl = styled.button`
