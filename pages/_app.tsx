@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react"
 import { ThemeProvider } from 'styled-components'
 import { Theme } from '@/styled/theme'
 import { Layout } from "@/page-components/layout";
+import { Provider } from "@/store/tracked";
 
 
 type NextPageWithLayout = NextComponentType<NextPageContext> & {
@@ -21,11 +22,13 @@ function App({
   const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>)
 
   return (
-    <ThemeProvider theme={ Theme }>
-      <SessionProvider session={session}>
-        { getLayout(<Component {...pageProps}/>) }
-      </SessionProvider>
-    </ThemeProvider>
+    <Provider>
+      <ThemeProvider theme={ Theme }>
+        <SessionProvider session={session}>
+          { getLayout(<Component {...pageProps}/>) }
+        </SessionProvider>
+      </ThemeProvider>
+    </Provider>
   )
 }
 

@@ -1,6 +1,6 @@
 import { 
   GetServerSidePropsContext,
-  InferGetStaticPropsType, 
+  InferGetServerSidePropsType,
   NextPage } from "next";
 import { RootPage } from "@/page-components/root";
 import { DividedArticles } from "@/store/tracked";
@@ -21,7 +21,7 @@ type RootPageT<T> = NextPage<T> & {
   getLayout: ( page: React.ReactElement ) => React.ReactNode
 }
 
-const Home: RootPageT<InferGetStaticPropsType<typeof getServerSideProps>> = ( { articles } ) =>{
+const Home: RootPageT<InferGetServerSidePropsType<typeof getServerSideProps>> = ( { articles } ) =>{
   const { data } = useSession();
   const router = useRouter();
 

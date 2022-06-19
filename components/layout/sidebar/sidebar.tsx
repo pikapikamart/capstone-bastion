@@ -9,11 +9,14 @@ import NavHome from "@/public/icons/icon-nav-home.svg";
 import NavLikes from "@/public/icons/icon-nav-likes.svg";
 import NavWriters from "@/public/icons/icon-nav-writers.svg";
 import NavNotifications from "@/public/icons/icon-nav-notification.svg";
+import NavWritings from "@/public/icons/icon-nav-writings.svg";
 import { SrOnly } from "@/styled/shared/helpers";
+import { useSession } from "next-auth/react";
 
 
 const Sidebar = () =>{
   const currentPath = useRouter().pathname.slice(1);
+  const { data } = useSession();
 
   return (
     <Wrapper aria-label="primary">
@@ -58,6 +61,18 @@ const Sidebar = () =>{
               <SrOnly>Notifications</SrOnly>
             </Navlink>
         </Link>
+        { data?.user?.userType==="writer" && (
+          <Link 
+            href="/writings"
+            passHref>
+            <Navlink aria-current={ currentPath==="writings"? "page" : undefined }>
+              <NavIconHolder>
+                <NavWritings aria-hidden="true" />
+              </NavIconHolder>
+              <SrOnly>Writings</SrOnly>
+            </Navlink>
+        </Link>
+        ) }
       </Navlist>
     </Wrapper>
   );
