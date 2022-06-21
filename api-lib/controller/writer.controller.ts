@@ -121,6 +121,7 @@ export const updateWriterHandler = async (
     if ( writerBody.image && currentWriter.image ) {
       await deleteCloudinaryImage("bastion/writers/", currentWriter.image);
     } 
+    
     writerBody.image = await sendCloudinaryImage(writerBody.image, "bastion/writers");
     
     await updateWriter({ email: currentWriter.email}, writerBody);

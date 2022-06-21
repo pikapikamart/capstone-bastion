@@ -39,7 +39,7 @@ const Writers = ( {
                   <Name>{ writerFullName(writer) }</Name>
               </Link>
             </div>
-            <Bio>{ writer.bio }</Bio>
+            <Bio>{ writer.bio? writer.bio : "A mysterious individual who has yet to fill out their bio. One thing's for sure. I love writing." }</Bio>
           </Writer>
         )) }
       </WriterList>

@@ -58,10 +58,11 @@ export const Title = styled.h4`
 
 export const Text = styled.p`
   font-size: ${ ({theme})  => fluid(14, 3, theme.fontSizes.textMedium)};
+  line-height: 1.4;
   margin-bottom: ${ rem(12) };
 
   ${ ({theme}) => `
-    color: ${ theme.colors.greyOne };
+    color: ${ theme.colors.darkThree };
     font-size: ${ fluid(14, 3, theme.fontSizes.textMedium) };
   ` }
 `
@@ -103,5 +104,6 @@ export const ArticleImageHolder = styled.div`
 
   img {
     height: ${ rem(144) };
+    width: 100%;
   }
 `

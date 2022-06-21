@@ -6,13 +6,13 @@ import {
   ContentContainer,
   ImageHolder, 
   LikeButton, 
-  Text, 
   TextsContainer, 
   Title, 
   Wrapper, 
   WritersContainer} from "./article.styled";
 import LikeIcon from "@/public/icons/icon-heart.svg";
 import { Writers } from "@/components/shared/writers";
+import xss from "xss";
 
 
 interface ArticleProps {
@@ -40,8 +40,10 @@ const Article = ( { article }: ArticleProps ) =>{
         <ContentContainer>
           <Title>{ article.title }</Title>
           <ArticleDate>{ getFullDate(article.createdAt) }</ArticleDate>
-          <TextsContainer>
-            { article.content.map((text, index) => <Text key={ `article-text-${ index }` }>{ text }</Text>) }
+          <TextsContainer
+            dangerouslySetInnerHTML={ {
+              __html: xss(article.content)
+            } }  >
           </TextsContainer>
           <div>
             <LikeButton>

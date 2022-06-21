@@ -16,6 +16,7 @@ import {
   createReadings, 
   updateReadings } from "../service/readings.service";
 import { customAlphabet } from "nanoid";
+import xss from "xss";
 
 
 export const createArticleHandler = async (
@@ -27,11 +28,10 @@ export const createArticleHandler = async (
     ...req.body,
     searchId: nanoid()
   };
-  articleBody.image = await sendCloudinaryImage(articleBody.image, "articles");
 
   try {
     const foundArticle = await findArticle({ title: articleBody.title });
-
+    
     if ( foundArticle ) {
       return clientError(res, 409, "Article already created.");
     }
@@ -44,6 +44,9 @@ export const createArticleHandler = async (
     
     articleBody.author = currentWriter._id;
     articleBody.likes = 0;
+    articleBody.content = xss(articleBody.content);
+
+    articleBody.image = await sendCloudinaryImage(articleBody.image, "bastion/articles");
 
     const createdArticle = await createArticle(articleBody);
     

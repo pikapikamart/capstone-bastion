@@ -24,8 +24,10 @@ interface ArticleProps {
 }
 
 const limitText = ( text: string ) =>{
-  
-  return text.substring(0, 150) + "...";
+
+  const stripped = text.replace(/(<([^>]+)>)/gi, "");
+
+  return stripped.substring(0, 150) + "...";
 }
 
 const Article = ( { article }: ArticleProps ) =>{
@@ -39,18 +41,18 @@ const Article = ( { article }: ArticleProps ) =>{
               href={ `/writer/${ article.author.username }` }
               passHref >
               <Writer>
-                <WriterImage src={ article.author.image } alt={ writerFullName(article.author) } />
+                <WriterImage src={ article.author.image?? "/icons/default-avatar.png" } alt={ writerFullName(article.author) } />
                 { writerFullName(article.author) }
               </Writer>
             </Link>
           </li>
           { article.collaborators.map(writer => (
-            <li key={ article.searchId + writer.searchId }>
+            <li key={ article.searchId }>
               <Link
                 href={ `writer/${ writer.username }` }
                 passHref>
                 <Writer>
-                  <WriterImage src={ writer.image } alt={ writerFullName(writer) } />
+                  <WriterImage src={ writer.image?? "/icons/default-avatar.png" } alt={ writerFullName(writer) } />
                   { writerFullName(writer) }
                 </Writer>
               </Link>
@@ -65,7 +67,7 @@ const Article = ( { article }: ArticleProps ) =>{
             </a>
           </Link>
         </Title>
-        <Text>{ limitText(article.content[0]) }</Text>
+        <Text>{ limitText(article.content) }</Text>
         <DateContainer>
           <CreatedAt>{ getFullDate(article.createdAt) }</CreatedAt>
           <LikeButton>

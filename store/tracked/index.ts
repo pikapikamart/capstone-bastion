@@ -18,7 +18,7 @@ export interface Writer extends UserBody{
 export interface ArticleData {
   searchId: string,
   title: string,
-  content: string[],
+  content: string,
   image: string,
   type: string,
   likes: number,

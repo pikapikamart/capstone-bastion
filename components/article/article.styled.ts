@@ -57,15 +57,15 @@ export const ArticleDate = styled.p`
 
 export const TextsContainer = styled.div`
   border-bottom: 3px dashed rgba(0, 0, 0, .3);
-`
 
-export const Text = styled.p`
-  font-weight: 300;
-  font-family: 'Source Serif Pro', serif;
-  font-size: ${ ({theme}) => fluid(theme.fontSizes.default, 2.4, theme.fontSizes.textLargest) };
-  line-height: 2;
-  margin-bottom: ${ fluid(40, 5, 44) };
-  text-shadow: 0 0 #000000;
+  > p {
+    font-weight: 300;
+    font-family: 'Source Serif Pro', serif;
+    font-size: ${ ({theme}) => fluid(theme.fontSizes.default, 2.4, theme.fontSizes.textLargest) };
+    line-height: 2;
+    margin-bottom: ${ fluid(40, 5, 44) };
+    text-shadow: 0 0 #000000;
+  }
 `
 
 export const LikeButton = styled.button`

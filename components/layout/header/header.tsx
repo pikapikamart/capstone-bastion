@@ -102,7 +102,7 @@ const Header = () => {
           <Relative>
             <button onClick={ handleUserExpansion }>
               <UserImage
-                src={ data.user.image as string }
+                src={  data.user.image? data.user.image : "/icons/default-avatar.png" }
                 alt={ `${ data.user.firstName } ${ data.user.lastName }` }  />
             </button>
             { userExpanded && (
@@ -112,7 +112,7 @@ const Header = () => {
                   passHref>
                     <UserProfile>
                       <UserImage
-                        src={ data.user.image as string }
+                        src={ data.user.image? data.user.image : "/icons/default-avatar.png" }
                         alt={ `${ data.user.firstName } ${ data.user.lastName }` }  />
                       <div>
                         <UserName>{ `${ data.user.firstName }  ${ data.user.lastName }` }</UserName>
