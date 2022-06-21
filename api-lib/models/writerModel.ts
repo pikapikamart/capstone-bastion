@@ -13,7 +13,10 @@ export interface Writer extends User {
   writerId: string,
   image: string,
   bio?: string,
-  writings: ArticleDocument["_id"][]
+  writings: ArticleDocument["_id"][],
+  collaborations: ArticleDocument["_id"][],
+  likes: ArticleDocument["_id"][],
+  followings: WriterDocument["_id"][]
 }
 
 export interface WriterDocument extends Writer, UserDocument {}
@@ -35,6 +38,24 @@ const writerSchema: mongoose.Schema<WriterDocument> = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Article"
+    }
+  ],
+  collaborations: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Article"
+    }
+  ],
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Article"
+    }
+  ],
+  followings: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Writer"
     }
   ]
 }, { timestamps: true });

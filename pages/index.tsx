@@ -2,26 +2,26 @@ import {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage } from "next";
+import { 
+  getSession, 
+  useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import { RootPage } from "@/page-components/root";
 import { DividedArticles } from "@/store/tracked";
 import { HTMLHead } from "@/page-components/layout/head";
 import { GlobalStyles } from "@/styled/theme";
 import { Header } from "@/components/layout/header";
+import { connectDatabase } from "@/api-lib/db";
 import { articlesServiceOptions } from "@/api-lib/controller/options";
 import { findSlicedReadings } from "@/api-lib/service/readings.service";
-import { 
-  getSession, 
-  useSession } from "next-auth/react";
-import { connectDatabase } from "@/api-lib/db";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
-
+  
 
 type RootPageT<T> = NextPage<T> & {
   getLayout: ( page: React.ReactElement ) => React.ReactNode
 }
 
-const Home: RootPageT<InferGetServerSidePropsType<typeof getServerSideProps>> = ( { articles } ) =>{
+const Root: RootPageT<InferGetServerSidePropsType<typeof getServerSideProps>> = ( { articles } ) =>{
   const { data } = useSession();
   const router = useRouter();
 
@@ -31,12 +31,18 @@ const Home: RootPageT<InferGetServerSidePropsType<typeof getServerSideProps>> = 
     }
   }, [])
 
+  if ( data ) {
+    return (
+      <div></div>
+    )
+  }
+
   return (
     <RootPage articles={ articles } />
   )
 }
 
-Home.getLayout = ( page: React.ReactElement ) =>{
+Root.getLayout = ( page: React.ReactElement ) =>{
 
   return (
     <>
@@ -66,4 +72,4 @@ export const getServerSideProps = async ( context: GetServerSidePropsContext ) =
 }
 
 
-export default Home;
+export default Root;

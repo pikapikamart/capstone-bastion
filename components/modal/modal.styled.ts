@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { 
   rem,
   fluid,
@@ -29,9 +29,21 @@ export const Form = styled.form`
   ` }
 `
 
-export const TopControls = styled.div`
+interface TopControlsProps {
+  absolute?: boolean
+}
+
+export const TopControls = styled.div<TopControlsProps>`
   display: flex;
   width: 100%;
+
+  ${ ({absolute}) => {
+    switch(absolute) {
+      case true: return css`
+        position: absolute;
+      `
+    }
+  } }
 `
 
 export const TopControl = styled.button`
@@ -157,8 +169,24 @@ export const DefaultContainer = styled(Form)`
   min-height: auto;
 `
 
-export const WelcomeContent = styled.p`
+export const MiddleContent = styled.p`
   line-height: 1.4;
-  margin: ${ fluid(40, 10, 64) } 0 ${ fluid(24, 5, 40) };
+  margin: ${ fluid(40, 10, 56) } 0 ${ fluid(24, 5, 40) };
   text-align: center;
+`
+
+export const Select = styled.select`
+  appearance: none;
+  border: none; 
+  font-family: "montserrat", "sans-serif";
+  margin-top: ${ rem(12) };
+  max-width: ${ rem(256) };
+  padding: ${ rem(8) } 0 ${ rem(4) };
+  text-align: center;
+  width: 100%;
+
+  ${ ({theme}) => `
+    font-size: ${ rem(theme.fontSizes.default) };
+    border-bottom: 1px solid ${ theme.colors.darkOne };
+  ` }
 `

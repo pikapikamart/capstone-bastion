@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ArticleDocument } from "./articleModel";
 import { 
   User,
   userBaseModel, 
@@ -6,10 +7,13 @@ import {
 import { 
   preHashModel,
   modelComparePassword } from "./utils";
+import { WriterDocument } from "./writerModel";
 
 
 export interface Student extends User {
-  studentId: string
+  studentId: string,
+  likes: ArticleDocument["_id"][],
+  followings: WriterDocument["_id"][]
 }
 
 export interface StudentDocument extends Student, UserDocument {}
@@ -25,6 +29,12 @@ const studentSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Article"
+    }
+  ],
+  followings: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Writer"
     }
   ]
 }, { timestamps: true });

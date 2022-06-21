@@ -19,20 +19,25 @@ const Articles = ( {
   children,
   articles
 }: ArticlesProps ) =>{
-  
+
   return (
-    <Wrapper>
-      { isDividedArticles(articles) && articles.map(readings => (
-        <ContentContainer key={ readings.genre }>
-          <GenreContainer>
-            <GenreHeading>{ readings.genre }</GenreHeading>
-          </GenreContainer>
-          <ArticleList articles={ readings.readings } />
-        </ContentContainer>
-      )) }
-      { !isDividedArticles(articles) && <ArticleList articles={ articles } /> }
-      { children }
-    </Wrapper>
+    <>
+      { articles.length!==0 && (
+        <Wrapper>
+          { isDividedArticles(articles) && articles.map(readings => (
+            <ContentContainer key={ readings.genre }>
+              <GenreContainer>
+                <GenreHeading>{ readings.genre }</GenreHeading>
+              </GenreContainer>
+              <ArticleList articles={ readings.readings } />
+            </ContentContainer>
+          )) }
+          { !isDividedArticles(articles) && <ArticleList articles={ articles } /> }
+          { children }
+        </Wrapper>
+      ) }
+      { articles.length===0 && <div></div> }
+    </>
   )
 }
 

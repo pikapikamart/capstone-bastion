@@ -23,6 +23,10 @@ import {
   signIn, 
   signOut,
   useSession } from "next-auth/react";
+import { useTrackedState } from "@/store/tracked";
+import { useRouter } from "next/router";
+import { PublishControls } from "./publish";
+import { useEffect } from "react";
 
 
 const Header = () => {
@@ -33,8 +37,18 @@ const Header = () => {
   const { 
     isExpanded: userExpanded, 
     handleExpansion: handleUserExpansion } = useExpansion();
-  const { data, status } = useSession();
-  
+  const { data } = useSession();
+  const { writing } = useTrackedState();
+  const currentPath = useRouter().pathname;
+
+  useEffect(() =>{
+    if ( signUp ) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [ signUp ])
+
   return (
     <Wrapper>
       { signUp && <SignUpModal handleSignUp={ handleSignUp } /> }
@@ -51,7 +65,7 @@ const Header = () => {
             </LogoText>
         </LogoLink>
       </Link>
-      { !data && <>
+      { !data && currentPath!=="/write" && <>
         <nav>
           <Hamburger 
             aria-expanded={ isExpanded }
@@ -79,7 +93,7 @@ const Header = () => {
         </nav>
       </> 
       }
-      { data &&  data.user && (
+      { data && data.user && currentPath!=="/write" && (
         <UserNavbar>
           <FirstName>
             Hello, 
@@ -115,6 +129,7 @@ const Header = () => {
           </Relative>
         </UserNavbar>
       ) }
+      { currentPath=="/write" && <PublishControls />}
     </Wrapper>
   );
 }

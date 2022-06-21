@@ -1,9 +1,11 @@
-import { CenterItem, MainButton } from "@/styled/shared/collection";
+import { 
+  CenterItem, 
+  MainButton } from "@/styled/shared/collection";
 import { 
   ContentContainer,
   DefaultContainer, 
   Heading, 
-  WelcomeContent, 
+  MiddleContent, 
   Wrapper } from "../modal.styled";
 
 
@@ -22,9 +24,9 @@ const Welcome = ({
       <DefaultContainer as="div">
         <ContentContainer>
           <Heading>Welcome!</Heading>
-          <WelcomeContent>
+          <MiddleContent>
             Your { userType } account has been successfully created!  We are glad for you to join us!
-          </WelcomeContent>
+          </MiddleContent>
           <CenterItem>
             <MainButton onClick={ handleSignUp }>Close</MainButton>
           </CenterItem>

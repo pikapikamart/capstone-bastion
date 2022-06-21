@@ -4,6 +4,7 @@ import {
   fluid,
   breakpoint
 } from "@/styled/functions";
+import { BorderedButton } from "@/styled/shared/collection";
 
 
 export const Wrapper = styled.header`
@@ -229,4 +230,13 @@ export const Signout = styled.button`
     color: ${ theme.colors.greyOne };
     font-size: ${ rem(theme.fontSizes.default) };
   `}
+`
+
+export const PublishContainer = styled.div`
+  align-items: center;
+  display: flex;
+
+  ${ BorderedButton } {
+    margin-right: ${ rem(4) };
+  }
 `

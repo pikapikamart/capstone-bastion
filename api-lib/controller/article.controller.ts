@@ -10,7 +10,7 @@ import { clientSuccess } from "../utils/success";
 import { 
   findArticle,
   createArticle } from "../service/article.service";
-import { getCurrentWriter } from "../utils";
+import { getCurrentWriter, sendCloudinaryImage } from "../utils";
 import { updateWriter } from "../service/writer.service";
 import { 
   createReadings, 
@@ -22,13 +22,12 @@ export const createArticleHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  // use a image string returned by filereader
-  // send to cloudinary
   const nanoid = customAlphabet("1234567890TheBastionGroupOfPublicationsprmsuzw", 14);
   const articleBody: Article = {
     ...req.body,
     searchId: nanoid()
   };
+  articleBody.image = await sendCloudinaryImage(articleBody.image, "articles");
 
   try {
     const foundArticle = await findArticle({ title: articleBody.title });

@@ -43,63 +43,47 @@ interface SaveWritingPayload {
   contentSanitized: string
 }
 
-type Action = 
-  | { type: "START_WRITING" }
-  | { type: "SAVE_WRITING", payload: SaveWritingPayload }
-  | { type: "SUBMIT_WRITING" }
-
 export interface ArticleCreation {
+  [ key:string ]: string,
   image: string,
   title: string,
-  content: string[],
-  contentSanitized: string,
-  category: ""
+  content: string,
+  type: string
 }
 
-interface Writing extends ArticleCreation {
-  isSubmitting: boolean,
-  submit: boolean
-}
+type Action = 
+  | { type: "START_WRITING" }
+  | { type: "SAVE_WRITING", field: string, data: string }
 
 interface Store {
-  writing?: Writing
+  writing?: ArticleCreation
 }
 
 const reducer = ( draft: Store, action: Action ) => {
   switch(action.type) {
     case "START_WRITING": {
-      const writingInitialState: Writing = {
-        submit: false,
-        isSubmitting: false,
+      const writingInitialState: ArticleCreation = {
         image: "",
         title: "",
-        content: [],
-        contentSanitized: "",
-        category: ""
+        content: "",
+        type: ""
       }
 
-      draft.writing = writingInitialState
-    }
+      draft.writing = writingInitialState;
+
       return;
+    }
     case "SAVE_WRITING": {
       if ( draft.writing ) {
-        draft.writing.contentSanitized = action.payload.contentSanitized;
-        draft.writing.image = action.payload.image;
-        draft.writing.title = action.payload.title; 
+        draft.writing[action.field] = action.data;
       }
+
       return;
-    }
-    case "SUBMIT_WRITING": {
-      if ( draft.writing ) {
-        draft.writing.isSubmitting = true;
-      }
     }
   }
 }
 
-const initialState: Store = {
-  
-}
+const initialState: Store = {}
 
 const useValue = (): [ Store, Dispatch<Action> ] => {
   const [ state, dispatch ] = useImmerReducer(reducer, initialState);

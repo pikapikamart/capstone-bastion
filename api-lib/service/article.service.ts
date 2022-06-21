@@ -2,8 +2,7 @@ import {
   DocumentDefinition,
   FilterQuery,
   PopulateOptions,
-  ProjectionType,
-  QueryOptions } from "mongoose";
+  ProjectionType } from "mongoose";
 import { 
   ArticleModel,
   Article,

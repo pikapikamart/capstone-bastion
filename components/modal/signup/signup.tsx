@@ -126,13 +126,16 @@ const SignUp = ( { handleSignUp }: SignUpProps ) =>{
     }
   }, [ submitForm ])
 
+  if ( postData.success && userType ) {
+    return (
+      <WelcomeModal
+        userType={ userType }
+        handleSignUp={ handleSignUp } />
+    )
+  }
+
   return (
     <BaseModal>
-      { postData.success && userType && (
-        <WelcomeModal 
-          userType={ userType }
-          handleSignUp={ handleSignUp } />
-      ) }
       <Form 
         noValidate
         onSubmit={ handleFormSubmit }>

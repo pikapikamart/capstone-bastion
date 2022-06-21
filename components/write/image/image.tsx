@@ -2,18 +2,14 @@ import {
   AddImage, 
   Wrapper } from "./image.styled";
 import { SrOnly } from "@/styled/shared/helpers";
-import { ArticleCreation } from "@/store/tracked";
+import { 
+  useDispatch, 
+  useTrackedState} from "@/store/tracked";
 
 
-interface ImageProps {
-  setArticle: React.Dispatch<React.SetStateAction<Omit<ArticleCreation, "category" | "content">>>,
-  image: string
-}
-
-const Image = ( {
-  setArticle,
-  image
-}: ImageProps ) =>{
+const Image = () =>{
+  const dispatch = useDispatch();
+  const { writing } = useTrackedState();
 
   const handleImageAddition = ( event: React.ChangeEvent<HTMLInputElement> ) =>{
     if ( event.target.files ) {
@@ -30,10 +26,11 @@ const Image = ( {
           const ctx = canvas.getContext("2d");
           ctx?.drawImage(img, 0, 0, 826, 416);
           const url = canvas.toDataURL(imageFile.type);
-          setArticle( prev => ({
-            ...prev,
-            image: url
-          }))
+          dispatch({
+            type: "SAVE_WRITING",
+            field: "image",
+            data: url
+          })
         }
 
         img.src = readerEvent.target?.result as string;
@@ -55,12 +52,12 @@ const Image = ( {
         onChange={ handleImageAddition } />
       <AddImage
         htmlFor="image" 
-        isDone={ image!=="" } >
+        isDone={ writing?.image!=="" } >
         <SrOnly>Add image to article</SrOnly>
       </AddImage>
-      { image && (
+      { writing && (
         <img 
-          src={ image } 
+          src={ writing.image } 
           alt=""
           aria-hidden="true" />
       ) }
