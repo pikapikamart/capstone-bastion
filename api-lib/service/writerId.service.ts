@@ -16,3 +16,9 @@ export const findWriterId = async(
 ): Promise<WriterId | null> => (
   WriterIdModel.findOne(query)
 )
+
+export const updateWriterId = async(
+  query: FilterQuery<WriterId>
+): Promise<WriterId | null> => (
+  WriterIdModel.findOneAndUpdate(query, { status: "used" })
+)

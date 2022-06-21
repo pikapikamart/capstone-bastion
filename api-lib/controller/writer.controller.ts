@@ -8,8 +8,13 @@ import {
 import { clientSuccess } from "../utils/success";
 import { 
   createWriter, 
-  findWriter } from "../service/writer.service";
+  findWriter, 
+  updateWriter} from "../service/writer.service";
 import { writerServiceOptions } from "./options";
+import { 
+  findWriterId, 
+  updateWriterId } from "../service/writerId.service";
+import { deleteCloudinaryImage, getCurrentWriter, sendCloudinaryImage } from "../utils";
 
 
 export const createWriterHandler = async (
@@ -26,7 +31,18 @@ export const createWriterHandler = async (
       return clientError(res, 409, "Email already in use.");
     }
 
+    const availableId = await findWriterId({ id: writerBody.writerId });
+
+    if ( !availableId ) {
+      return clientError(res, 404, "No writer ID found.");
+    }
+
+    if ( availableId.status==="used" ) {
+      return clientError(res, 409, "Writer ID is already used.");
+    }
+
     await createWriter(writerBody);
+    await updateWriterId({ id: writerBody.writerId });
 
     return clientSuccess(res, 201, "User account has been created.");
   } catch( error ) {
@@ -85,6 +101,32 @@ export const findWriterHandler = async(
   
     return clientSuccess(res, 200, foundWriter);
   } catch( error ) {
+    return validateError(error, 400, res);
+  }
+}
+
+export const updateWriterHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  const writerBody: Writer = req.body;
+  
+  try {
+    const currentWriter = await getCurrentWriter(req);
+
+    if ( !currentWriter ) {
+      return clientError(res, 401);
+    }
+
+    if ( writerBody.image && currentWriter.image ) {
+      await deleteCloudinaryImage("bastion/writers/", currentWriter.image);
+    } 
+    writerBody.image = await sendCloudinaryImage(writerBody.image, "bastion/writers");
+    
+    await updateWriter({ email: currentWriter.email}, writerBody);
+
+    return clientSuccess(res, 200, "Account successfully updated.");
+  } catch(error) {
     return validateError(error, 400, res);
   }
 }

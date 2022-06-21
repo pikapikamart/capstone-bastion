@@ -23,15 +23,19 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-
 export const sendCloudinaryImage = async( image: string, folder: string ) =>{
   if ( image ) {
     const uploadResponse = await cloudinary.uploader.upload(image, {
-      upload_preset: folder
+      folder
     });
 
     return uploadResponse.url;
   }
 
   return "";
+}
+
+export const deleteCloudinaryImage = async( asset: string, url: string ) =>{
+  const publicId = asset + url.slice(url.lastIndexOf("/")+1, url.lastIndexOf("."));
+  await cloudinary.uploader.destroy(publicId);
 }

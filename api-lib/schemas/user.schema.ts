@@ -34,3 +34,12 @@ export const signInSchema = yup.object({
     password: yup.string().required("Password is required.")
   })
 })
+
+export const writerUpdateSchema = yup.object({
+  body: yup.object({
+    firstName: yup.string().required("First name is required."),
+    lastName: yup.string().required("Last name is required."),
+    bio: yup.string().max(160, "Bio length invalid."),
+    image: yup.string().required("Image is required."),
+  })
+})
