@@ -29,7 +29,7 @@ const Articles = ( {
               <GenreContainer>
                 <GenreHeading>{ readings.genre }</GenreHeading>
               </GenreContainer>
-              <ArticleList articles={ readings.readings } />
+              <ArticleList articles={ readings.readings.reverse() } />
             </ContentContainer>
           )) }
           { !isDividedArticles(articles) && <ArticleList articles={ articles } /> }

@@ -1,6 +1,7 @@
 import { 
   CenterItem, 
   MainButton } from "@/styled/shared/collection";
+import { BaseModal } from "..";
 import { 
   ContentContainer,
   DefaultContainer, 
@@ -20,7 +21,7 @@ const Welcome = ({
 }: WelcomeProps) =>{
 
   return (
-    <Wrapper>
+    <BaseModal>
       <DefaultContainer as="div">
         <ContentContainer>
           <Heading>Welcome!</Heading>
@@ -32,7 +33,7 @@ const Welcome = ({
           </CenterItem>
         </ContentContainer>
       </DefaultContainer>
-    </Wrapper>
+    </BaseModal>
   );
 }
 

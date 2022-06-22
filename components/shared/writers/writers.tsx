@@ -29,7 +29,7 @@ const Writers = ( {
           <Writer key={ writer.username }>
             <div>
               <Image 
-                src={ writer.image }
+                src={ writer.image?? "/icons/default-avatar.svg" }
                 alt={ writerFullName(writer) } />
             </div>
             <div>

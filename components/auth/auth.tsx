@@ -83,7 +83,7 @@ const Auth = ( { csrfToken }: AuthProps ) =>{
         try {
           const result = await fetch(`/api/user/signin/${ userType }`, {
             headers: {
-              "Content-type": "application-json"
+              "Content-type": "application/json"
             },
             method: "POST",
             body: JSON.stringify(userData)

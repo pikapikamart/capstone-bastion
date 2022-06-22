@@ -22,7 +22,7 @@ const Sidebar = () =>{
     <Wrapper aria-label="primary">
       <Navlist>
         <Link 
-          href="/home"
+          href={ data? "/home" : "/" }
           passHref>
             <Navlink aria-current={ currentPath==="home"? "page" : undefined }>
               <NavIconHolder>

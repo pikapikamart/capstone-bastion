@@ -7,6 +7,9 @@ import { PublishModal } from "@/components/modal/publish";
 import { 
   useEffect, 
   useState } from "react";
+import { BaseModal } from "@/components/modal";
+import { DefaultContainer, Heading, MiddleContent } from "@/components/modal/modal.styled";
+import { useRouter } from "next/router";
 
 
 export interface SubmitData {
@@ -22,6 +25,7 @@ const Publish = () =>{
     message: ""
   });
   const { isExpanded, handleExpansion } = useExpansion();
+  const router = useRouter();
 
   useEffect(() =>{
     if ( isExpanded ) {
@@ -39,7 +43,11 @@ const Publish = () =>{
   }, [ submitData.isError ])
 
   useEffect(() =>{
-
+    if ( submitData.isSuccess ) {
+      const timeout = setTimeout(() => router.push("/home"), 4000);
+    
+      return () => clearTimeout(timeout);
+    }
   }, [ submitData.isSuccess ])
 
   return (
@@ -48,7 +56,15 @@ const Publish = () =>{
         <BorderedButton>Save</BorderedButton>
         <MainButton onClick={ handleExpansion }>Publish</MainButton>
       </PublishContainer>
-       { isExpanded && <PublishModal 
+      { submitData.isSuccess && (
+        <BaseModal>
+          <DefaultContainer as="div">
+            <Heading>Thank you!</Heading>
+            <MiddleContent>{ submitData.message }</MiddleContent>
+          </DefaultContainer>
+        </BaseModal>
+      ) }
+      { isExpanded && !submitData.isSuccess && <PublishModal 
         handleExpansion={ handleExpansion }
         setSubmitData={ setSubmitData } /> }
     </>

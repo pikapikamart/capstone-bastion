@@ -182,6 +182,7 @@ export const UserDropdown = styled.div`
   inset: calc(100% + ${ rem(24) }) 0 auto auto;
   min-width: ${ rem(296) };
   position: absolute;
+  z-index: 10;
 
   &::before {
     content: "";

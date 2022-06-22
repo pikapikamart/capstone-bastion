@@ -41,7 +41,7 @@ const Article = ( { article }: ArticleProps ) =>{
               href={ `/writer/${ article.author.username }` }
               passHref >
               <Writer>
-                <WriterImage src={ article.author.image?? "/icons/default-avatar.png" } alt={ writerFullName(article.author) } />
+                <WriterImage src={ article.author.image?? "/icons/default-avatar.svg" } alt={ writerFullName(article.author) } />
                 { writerFullName(article.author) }
               </Writer>
             </Link>
@@ -52,7 +52,7 @@ const Article = ( { article }: ArticleProps ) =>{
                 href={ `writer/${ writer.username }` }
                 passHref>
                 <Writer>
-                  <WriterImage src={ writer.image?? "/icons/default-avatar.png" } alt={ writerFullName(writer) } />
+                  <WriterImage src={ writer.image?? "/icons/default-avatar.svg" } alt={ writerFullName(writer) } />
                   { writerFullName(writer) }
                 </Writer>
               </Link>

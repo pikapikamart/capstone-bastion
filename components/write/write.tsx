@@ -25,6 +25,25 @@ const Write = () =>{
       (target.parentNode as HTMLElement).dataset.value = event.target.value;
     }
   }
+
+  const handleBackspaceKeydown = ( event: React.KeyboardEvent<HTMLDivElement> ) =>{
+    if ( storyArea.current?.innerHTML==="<p><br></p>" && event.key==="Backspace" ) {
+      event.preventDefault();
+      storyArea.current.classList.remove("typing");
+      setIsWriting(false);
+    }
+    else {
+      setIsWriting(true);
+    }
+  }
+
+  const handleOnBlurDispatch = ( field: string, data: string ) => {
+    dispatch({
+      type: "SAVE_WRITING",
+      field,
+      data
+    })
+  }
   
   useEffect(() =>{
     dispatch({ type: "START_WRITING" });
@@ -42,13 +61,7 @@ const Write = () =>{
           rows={ 1 } 
           placeholder="Title"
           onInput={ handleOnInput }
-          onBlur={ event => {
-            dispatch({
-              type: "SAVE_WRITING",
-              field: "title",
-              data: event.target.value
-            })
-          } }></Textarea>
+          onBlur={ event => { handleOnBlurDispatch("title", event.target.value)} }></Textarea>
       </TitleHolder>
       <StoryArea
         contentEditable="true"
@@ -56,25 +69,8 @@ const Write = () =>{
         data-placeholder="Write your story..."
         ref={ storyArea }
         isWriting={ isWriting }
-        onKeyDown={ event => {
-          if ( storyArea.current ) {
-            if ( storyArea.current.innerHTML==="<p><br></p>" && event.key==="Backspace" ) {
-              event.preventDefault();
-              storyArea.current.classList.remove("typing");
-              setIsWriting(false);
-            }
-            else {
-              setIsWriting(true);
-            }
-          }
-        }}
-        onBlur={ event => {
-          dispatch({
-            type: "SAVE_WRITING",
-            field: "content",
-            data: event.target.innerHTML==="<p><br></p>"? "" : xss(event.target.innerHTML)
-          })
-        } } >
+        onKeyDown={ handleBackspaceKeydown }
+        onBlur={ event => { handleOnBlurDispatch( "content", event.target.innerHTML==="<p><br></p>"? "" : xss(event.target.innerHTML) )} } >
           <p><br /></p>
         </StoryArea>
     </Wrapper>    

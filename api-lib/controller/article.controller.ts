@@ -85,7 +85,7 @@ export const createArticleHandler = async (
       await createReadings(readingsBody);
     }
 
-    return clientSuccess(res, 201, "Article creation successful.");
+    return clientSuccess(res, 201, "Your article has been successfully published.");
 
   } catch( error ) {
     return validateError(error, 400, res)

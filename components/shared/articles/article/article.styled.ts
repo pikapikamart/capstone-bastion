@@ -14,6 +14,7 @@ export const Wrapper = styled.li`
   ${ breakpoint("tablet", `
     align-items: flex-start;
     display: flex;
+    justify-content: space-between;
   `) }
 `
 
@@ -100,6 +101,7 @@ export const ArticleImageHolder = styled.div`
     display: block;
     flex: 1 0 ${ fluid(158, 20, 224) };
     margin-left: ${ rem(10) };
+    max-width: ${ rem(224) };
   `) }
 
   img {

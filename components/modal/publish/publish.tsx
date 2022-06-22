@@ -1,5 +1,6 @@
 import { SubmitData } from "@/components/layout/header/publish/publish";
 import { 
+  ResultJson,
   useDispatch, 
   useTrackedState } from "@/store/tracked";
 import { 
@@ -10,6 +11,7 @@ import { SrOnly } from "@/styled/shared/helpers";
 import React, { 
   useEffect, 
   useState } from "react";
+import { BaseModal } from "..";
 import {
   Wrapper,
   DefaultContainer,
@@ -21,6 +23,14 @@ import {
   Select
 } from "../modal.styled";
 
+
+const categories = [
+  "news",
+  "education",
+  "entertainment",
+  "updates",
+  "sports"
+]
 
 interface PublishProps {
   handleExpansion: () => void,
@@ -41,11 +51,14 @@ const Publish = ( {
     if ( !writing ) return;
 
     for ( const[ key, value ] of Object.entries(writing) ) {
-      if ( !value || (key==="content" && value==="<p><br></p>") ) {
+      if ( 
+        !value 
+        || ( key==="content" && value==="<p><br></p>" )
+        || ( key==="category" && !categories.includes(value) ) ) {
         setSubmitData(prev => ({
           ...prev,
           isError: true,
-          message: "Ooops. Try checing your article fields again."
+          message: "Ooops. Try checking your article fields again."
         }))
 
         return;
@@ -60,9 +73,31 @@ const Publish = ( {
 
       try {
         const sendArticle = async() =>{
-          const result = await fetch("/api/")
+          const result = await fetch("/api/article", {
+            headers: {
+              "Content-type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify(writing)
+          });
+          const resultJson: ResultJson = await result.json();
+
+          if ( result.ok ) {
+            setSubmitData( prev => ({
+              ...prev,
+              isSuccess: true,
+              message: resultJson.data
+            }))
+          } else {
+            setSubmitData( prev => ({
+              ...prev,
+              isError: true,
+              message: resultJson.data
+            }))
+          }
         }
-        // sendArticle();
+
+        sendArticle();
       } catch( error ) {
 
       }
@@ -70,7 +105,7 @@ const Publish = ( {
   }, [ submit ])
 
   return (
-    <Wrapper>
+    <BaseModal>
       <DefaultContainer onSubmit={ handleArticlePublish }>
         <Relative>
           <TopControls absolute={ true }>
@@ -90,14 +125,15 @@ const Publish = ( {
                   dispatch({
                     type: "SAVE_WRITING",
                     field: "type",
-                    data: event.target.value
+                    data: event.target.value[0].toUpperCase() + event.target.value.slice(1)
                   })
                 }}>
-                  <option value="news">News</option>
-                  <option value="education">Education</option>
-                  <option value="sports">Sports</option>
-                  <option value="entertainement">Entertainment</option>
-                  <option value="updates">Updates</option>
+                  <option hidden value=""></option>
+                  <option value="News">News</option>
+                  <option value="Education">Education</option>
+                  <option value="Sports">Sports</option>
+                  <option value="Entertainement">Entertainment</option>
+                  <option value="Updates">Updates</option>
                 </Select>
             </MiddleContent>
             <CenterItem>
@@ -107,7 +143,7 @@ const Publish = ( {
           </ContentContainer>
         </Relative>
       </DefaultContainer>
-    </Wrapper>
+    </BaseModal>
   );
 }
 
