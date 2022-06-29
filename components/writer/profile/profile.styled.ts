@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   ${ breakpoint("tablet", `
     align-items: center;
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: max-content auto;
   `) }
 `
 

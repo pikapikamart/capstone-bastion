@@ -46,7 +46,7 @@ export const getServerSideProps = async( context: GetServerSidePropsContext ) =>
 
   return {
     props: {
-      articles: JSON.parse(JSON.stringify(foundArticles)) as ArticleData[],
+      articles: (JSON.parse(JSON.stringify(foundArticles)) as ArticleData[]).reverse(),
       session
     }
   }

@@ -42,7 +42,10 @@ const Profile = ( { writer }: ProfileProps ) =>{
       <Informations>
         <Name>{ writerFullName(writer) }</Name>
         { currentWriter && (
-          <Bio>{ currentWriter.bio? currentWriter.bio : "A mysterious writer who has yet to fill out my bio. One thing's for sure, I love writing." }</Bio>
+          <Bio>
+            { currentWriter.username===writer.username && (currentWriter.bio? currentWriter.bio : "A mysterious writer who has yet to fill out my bio. One thing's for sure, I love writing." ) }
+            { currentWriter.username!==writer.username && (writer.bio? writer.bio : "A mysterious writer who has yet to fill out my bio. One thing's for sure, I love writing.") }
+          </Bio>
         ) }
         { !currentWriter && (
           <Bio>{ writer.bio? writer.bio : "A mysterious writer who has yet to fill out my bio. One thing's for sure, I love writing." }</Bio>
@@ -55,6 +58,11 @@ const Profile = ( { writer }: ProfileProps ) =>{
           </MainButton>
           { isExpanded && <UpdateProfileModal handleUpdate={ handleExpansion } /> }
         </> }
+        { currentWriter && currentWriter?.username!==writer.username && (currentWriter?.followings.find(following => following.username===writer.username)? 
+          <MainButton>Following</MainButton> : 
+          <MainButton>Follow</MainButton>)
+        }
+        { data?.user?.userType==="student" && <MainButton>Follow</MainButton> }
       </Informations>
     </Wrapper>
   );

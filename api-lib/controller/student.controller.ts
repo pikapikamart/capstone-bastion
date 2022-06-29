@@ -35,7 +35,7 @@ export const signInStudentHandler = async(
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  const studentBody: Student = JSON.parse(req.body);
+  const studentBody: Student = req.body;
   
   try {
     const foundStudent = await findStudent({ email: studentBody.email });

@@ -56,7 +56,8 @@ interface UpdateWriterPayload {
 }
 
 type Action = 
-  | { type: "SET_USER", userType: "writer" | "student", data: UserWriter }
+  | { type: "SET_WRITER", userType: "writer" | "student", data: UserWriter }
+  | { type: "REMOVE_USER" } 
   | { type: "UPDATE_WRITER_PROFILE", payload: UpdateWriterPayload } 
   | { type: "START_WRITING" }
   | { type: "SAVE_WRITING", field: string, data: string }
@@ -68,8 +69,13 @@ interface Store {
 
 const reducer = ( draft: Store, action: Action ) => {
   switch(action.type) {
-    case "SET_USER": {
+    case "SET_WRITER": {
       draft.writer = action.data;
+      return;
+    }
+    case "REMOVE_USER": {
+      draft = {};
+
       return;
     }
     case "UPDATE_WRITER_PROFILE": {

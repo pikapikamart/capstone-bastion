@@ -12,6 +12,7 @@ import {
   Heading, 
   Input, 
   InputContainer, 
+  InputError, 
   InputLabel, 
   TopControl, 
   TopControls } from "../modal.styled";
@@ -150,6 +151,7 @@ const Update = ( { handleUpdate }: UpdateProps ) =>{
                 ref={ addInputRef }
                 defaultValue={ updateInformation.firstName } />
               <InputLabel htmlFor="firstName">First name</InputLabel>
+              <InputError id="firstName-error" >please add your first name</InputError>
             </InputContainer>
             <InputContainer>
               <Input
@@ -160,12 +162,14 @@ const Update = ( { handleUpdate }: UpdateProps ) =>{
                 ref={ addInputRef }
                 defaultValue={ updateInformation.lastName } />
               <InputLabel htmlFor="lastName">Last name</InputLabel>
+              <InputError id="lastName-error" >please add your first name</InputError>
             </InputContainer>
             <InputContainer>
               <Input
                 type="text"
                 name="bio"
                 id="bio"
+                maxLength={ 160 }
                 ref={ addInputRef }
                 defaultValue={ updateInformation.bio } />
               <InputLabel htmlFor="bio">Bio <span>( max of 160 characters )</span> </InputLabel>

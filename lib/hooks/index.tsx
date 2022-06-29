@@ -22,7 +22,7 @@ export const useCurrentWriter = () =>{
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if( data && data.user && !writer ) {
+    if( data && data.user?.userType==="writer" && !writer ) {
       const getWriter = async() =>{
         if ( !data.user ) return;
 
@@ -31,7 +31,7 @@ export const useCurrentWriter = () =>{
 
         if ( result.ok ) {
           dispatch({
-            type: "SET_USER",
+            type: "SET_WRITER",
             userType: data.user.userType as "writer" | "student",
             data: jsonResult.data
           })

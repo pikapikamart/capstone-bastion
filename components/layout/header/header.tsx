@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useExpansion } from "@/lib/hooks";
+import { useCurrentWriter, useExpansion } from "@/lib/hooks";
 import { SrOnly } from "@/styled/shared/helpers";
 import { 
   Wrapper,
@@ -37,7 +37,10 @@ const Header = () => {
   const { 
     isExpanded: userExpanded, 
     handleExpansion: handleUserExpansion } = useExpansion();
-  const { data } = useSession();
+  const { 
+    data,
+    writer
+   } = useCurrentWriter();
   const { writing } = useTrackedState();
   const currentPath = useRouter().pathname;
 
@@ -105,27 +108,40 @@ const Header = () => {
                 src={  data.user.image? data.user.image : "/icons/default-avatar.svg" }
                 alt={ `${ data.user.firstName } ${ data.user.lastName }` }  />
             </button>
-            { userExpanded && (
+            { userExpanded && <>
               <UserDropdown>
-                <Link 
-                  href={`/writer/${ data.user.username }`}
-                  passHref>
-                    <UserProfile>
-                      <UserImage
-                        src={ data.user.image? data.user.image : "/icons/default-avatar.svg" }
-                        alt={ `${ data.user.firstName } ${ data.user.lastName }` }  />
-                      <div>
-                        <UserName>{ `${ data.user.firstName }  ${ data.user.lastName }` }</UserName>
-                        <TextMedium color="greyTwo">See your profile</TextMedium>
-                      </div>
-                    </UserProfile>
-                </Link>
+                { writer && (
+                  <Link 
+                    href={`/writer/${ data.user.username }`}
+                    passHref>
+                      <UserProfile>
+                        <UserImage
+                          src={ data.user.image? data.user.image : "/icons/default-avatar.svg" }
+                          alt={ `${ data.user.firstName } ${ data.user.lastName }` }  />
+                        <div>
+                          <UserName>{ `${ data.user.firstName }  ${ data.user.lastName }` }</UserName>
+                          <TextMedium color="greyTwo">See your profile</TextMedium>
+                        </div>
+                      </UserProfile>
+                  </Link>
+                ) }
+                { !writer && (
+                  <UserProfile as="div">
+                    <UserImage
+                      src={ data.user.image? data.user.image : "/icons/default-avatar.svg" }
+                      alt={ `${ data.user.firstName } ${ data.user.lastName }` }  />
+                    <div>
+                      <UserName>{ `${ data.user.firstName }  ${ data.user.lastName }` }</UserName>
+                      <TextMedium color="greyTwo">See your profile</TextMedium>
+                    </div>
+                </UserProfile>
+                ) }
                 <Signout
                  onClick={ () => signOut({ callbackUrl: "/" }) } >
                   Sign out
                 </Signout>
               </UserDropdown>
-            ) } 
+            </> } 
           </Relative>
         </UserNavbar>
       ) }

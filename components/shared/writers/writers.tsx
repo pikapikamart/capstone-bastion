@@ -34,7 +34,7 @@ const Writers = ( {
             </div>
             <div>
               <Link
-                href={ `/writer/${ writerFullName(writer, false).toLowerCase() }` }
+                href={ `/writer/${ writer.username }` }
                 passHref>
                   <Name>{ writerFullName(writer) }</Name>
               </Link>

@@ -2,7 +2,8 @@ import { ArticlesSection } from "@/components/root/articles";
 import { HeroSection } from "@/components/root/hero";
 import { Articles } from "@/components/shared/articles";
 import { Categories } from "@/components/shared/categories";
-import { DividedArticles } from "@/store/tracked";
+import { DividedArticles, useDispatch } from "@/store/tracked";
+import { useEffect } from "react";
 
 
 interface RootProps {
@@ -10,6 +11,11 @@ interface RootProps {
 }
 
 const Root = ( { articles }: RootProps ) =>{
+  const dispatch = useDispatch();
+
+  useEffect(() =>{
+    dispatch({ type: "REMOVE_USER" });
+  }, [])
 
   return (
     <main>
