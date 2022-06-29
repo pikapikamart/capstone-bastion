@@ -22,6 +22,10 @@ const Home: NextPage<InferGetStaticPropsType<typeof getServerSideProps>> = ( { a
     }
   }, [ data ])
 
+  if ( !data ) {
+    return <div></div>
+  }
+
   return (
     <HomePage articles={ articles } />
   );

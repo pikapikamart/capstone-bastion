@@ -4,11 +4,13 @@ import {
   userBaseModel, 
   UserDocument} from "./userModel";
 import { ArticleDocument } from "./articleModel";
+import "./articleModel";
 import "../utils";
 import { 
   preHashModel, 
   modelComparePassword } from "./utils";
 
+  
 export interface Writer extends User {
   writerId: string,
   image: string,

@@ -34,6 +34,11 @@ export const CenterItem = styled.div`
   max-width: max-content;
 `
 
+export const SignedHero = styled.div`
+  line-height: 1.4;
+  max-width: ${ rem(320) };
+`
+
 export const SignedHeading = styled.h1`
   margin-bottom: ${ rem(8) };
 
@@ -96,4 +101,12 @@ export const TextMedium = styled.p<TextMedium>`
     color: ${ theme.colors[color] };
     font-size: ${ rem(theme.fontSizes.textMedium) };
   ` }
+`
+
+export const SignedMainWrapper = styled.main`
+  padding: ${ fluid(40, 10, 48) } ${ rem(16) };
+
+  ${ breakpoint("tablet", `
+    padding: ${ rem(48) } ${ rem(40) }
+  `) }
 `

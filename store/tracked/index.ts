@@ -37,12 +37,6 @@ export interface ResultJson {
   data: any
 }
 
-interface SaveWritingPayload {
-  image: string,
-  title: string,
-  contentSanitized: string
-}
-
 export interface ArticleCreation {
   [ key:string ]: string,
   image: string,
@@ -51,16 +45,41 @@ export interface ArticleCreation {
   type: string
 }
 
+export interface UserWriter extends Writer {
+  [ key: string ]: any,
+  likes: ArticleData[],
+  followings: Writer[]
+}
+
+interface UpdateWriterPayload {
+  [ key: string ]: any,
+}
+
 type Action = 
+  | { type: "SET_USER", userType: "writer" | "student", data: UserWriter }
+  | { type: "UPDATE_WRITER_PROFILE", payload: UpdateWriterPayload } 
   | { type: "START_WRITING" }
   | { type: "SAVE_WRITING", field: string, data: string }
 
 interface Store {
-  writing?: ArticleCreation
+  writing?: ArticleCreation,
+  writer?: UserWriter
 }
 
 const reducer = ( draft: Store, action: Action ) => {
   switch(action.type) {
+    case "SET_USER": {
+      draft.writer = action.data;
+      return;
+    }
+    case "UPDATE_WRITER_PROFILE": {
+      for( const[key, val] of Object.entries(action.payload) ) {
+        if ( draft.writer ) {
+          draft.writer[key] = val
+        }
+      }
+      return;
+    }
     case "START_WRITING": {
       const writingInitialState: ArticleCreation = {
         image: "",

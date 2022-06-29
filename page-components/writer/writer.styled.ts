@@ -15,7 +15,7 @@ export const Wrapper = styled.main`
   }
 
   ${ breakpoint("tablet", `
-  padding: ${ fluid(48, 8.5, 80) } ${ rem(40) };
+  padding: ${ fluid(48, 8.5, 80) } ${ rem(40) } ${ rem(192) };
   `) }
 
   ${ breakpoint("desktop", `

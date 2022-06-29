@@ -3,10 +3,10 @@ import {
   Wrapper } from "./writer.styled";
 import { Writer as WriterT } from "@/store/tracked";
 import { ProfileSection } from "@/components/writer/profile";
-import { writerFullName } from "@/lib/utils";
 import { ArticlesSection } from "@/components/writer/articles";
 import { Articles } from "@/components/shared/articles";
 import { Writers } from "@/components/shared/writers";
+import { useSession } from "next-auth/react";
 
 
 interface WriterProps {
@@ -14,16 +14,24 @@ interface WriterProps {
 }
 
 const Writer = ( { writer }: WriterProps ) =>{
+  const { data } = useSession();
 
   return (
     <Wrapper>
       <ContentContainer>
         <ProfileSection
-          image={ writer.image }
-          name={ writerFullName(writer) }
-          bio={ writer.bio } />
+          writer={ writer } />
         <ArticlesSection>
-          <Articles articles={ writer.writings } />
+          { !data && (
+            <Articles 
+              articles={ writer.writings }
+              owned={ false } />
+          ) }
+          { data && (
+            <Articles
+              articles={ writer.writings }
+              owned={ data.user?.username===writer.username } />
+          ) }
         </ArticlesSection>
       </ContentContainer>
       <Writers writers={[]}>

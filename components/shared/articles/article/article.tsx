@@ -1,5 +1,6 @@
 import { 
   ArticleImageHolder,
+  ArticleOption,
   CreatedAt,
   DateContainer,
   Information, 
@@ -17,10 +18,13 @@ import {
   sanitizeArticleLink,
   getFullDate,
   writerFullName } from "@/lib/utils";
+import { SrOnly } from "@/styled/shared/helpers";
+import { useExpansion } from "@/lib/hooks";
 
 
 interface ArticleProps {
-  article: ArticleData
+  article: ArticleData,
+  owned: boolean
 }
 
 const limitText = ( text: string ) =>{
@@ -30,10 +34,14 @@ const limitText = ( text: string ) =>{
   return stripped.substring(0, 150) + "...";
 }
 
-const Article = ( { article }: ArticleProps ) =>{
-  
+const Article = ( {
+  article,
+  owned
+}: ArticleProps ) =>{
+  const { isExpanded, handleExpansion } = useExpansion();  
+
   return (
-    <Wrapper>
+    <Wrapper isOwned={ owned }>
       <Information>
         <Writers>
           <li>
@@ -76,10 +84,17 @@ const Article = ( { article }: ArticleProps ) =>{
         </DateContainer>
       </Information>
       <ArticleImageHolder>
+        { owned && (
+          <ArticleOption 
+            aria-expanded={ isExpanded }
+            onClick={ handleExpansion } >
+            <SrOnly>Article option</SrOnly>
+          </ArticleOption>
+        ) }
         <img 
-        src={ article.image } 
-        alt=""
-        aria-hidden="true" />
+          src={ article.image } 
+          alt=""
+          aria-hidden="true" />
       </ArticleImageHolder>
     </Wrapper>
   );

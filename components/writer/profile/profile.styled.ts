@@ -11,7 +11,8 @@ export const Wrapper = styled.div`
   
   ${ breakpoint("tablet", `
     align-items: center;
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto;
   `) }
 `
 

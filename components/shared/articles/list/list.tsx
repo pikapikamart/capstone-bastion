@@ -3,14 +3,23 @@ import { Article } from "../article";
 
 
 interface ListProps {
-  articles: ArticleData[]
+  articles: ArticleData[],
+  owned: boolean
 }
 
-const List = ( { articles }: ListProps ) =>{
+const List = ( {
+  articles,
+  owned
+}: ListProps ) =>{
 
   return (
     <ul>
-      { articles.map(article => <Article key={ article.searchId } article={ article } />) }
+      { articles.map(article => (
+        <Article 
+          key={ article.searchId } 
+          article={ article }
+          owned={ owned } />
+      )) }
     </ul>
   );
 }

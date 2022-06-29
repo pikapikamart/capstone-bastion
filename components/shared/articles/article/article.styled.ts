@@ -6,14 +6,20 @@ import {
 } from "@/styled/functions";
 
 
-export const Wrapper = styled.li`
+interface WrapperProps {
+  isOwned: boolean
+}
+
+export const Wrapper = styled.li<WrapperProps>`
+  align-items: center;
+  display: flex;
+
   &:not(:last-of-type) {
     margin-bottom: ${ rem(48) };
   }
 
   ${ breakpoint("tablet", `
     align-items: flex-start;
-    display: flex;
     justify-content: space-between;
   `) }
 `
@@ -95,17 +101,36 @@ export const LikeButton = styled.button`
 `
 
 export const ArticleImageHolder = styled.div`
-  display: none;
+  img {
+    display: none;
+  }
 
   ${ breakpoint("tablet", `
     display: block;
     flex: 1 0 ${ fluid(158, 20, 224) };
     margin-left: ${ rem(10) };
     max-width: ${ rem(224) };
-  `) }
 
-  img {
-    height: ${ rem(144) };
-    width: 100%;
-  }
+    img {
+      display: block;
+      height: ${ rem(144) };
+      width: 100%;
+    }
+  `) }
+`
+
+export const ArticleOption = styled.button`
+  background: url("/icons/vertical-option.svg") no-repeat center center;
+  background-size: 100% 100%;
+  height: ${ rem(42) };
+  margin-left: ${ rem(16) };
+  width: ${ rem(26) };
+
+  ${ breakpoint("tablet", `
+    background-image: url("/icons/horizontal-option.svg");
+    display: block;
+    height: ${ rem(26) };
+    margin: 0 0 ${ rem(6) } auto;
+    width: ${ rem(42) };
+  `) }
 `

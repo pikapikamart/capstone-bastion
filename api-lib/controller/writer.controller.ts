@@ -14,7 +14,11 @@ import { writerServiceOptions } from "./options";
 import { 
   findWriterId, 
   updateWriterId } from "../service/writerId.service";
-import { deleteCloudinaryImage, getCurrentWriter, sendCloudinaryImage } from "../utils";
+import { 
+  deleteCloudinaryImage, 
+  getCurrentWriter, 
+  sendCloudinaryImage } from "../utils";
+import { getSession } from "next-auth/react";
 
 
 export const createWriterHandler = async (
@@ -54,7 +58,7 @@ export const signInWriterhandler = async(
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  const writerBody: Writer = JSON.parse(req.body);
+  const writerBody: Writer = req.body;
 
   try {
     const foundWriter = await findWriter({ email: writerBody.email });
@@ -118,16 +122,60 @@ export const updateWriterHandler = async (
       return clientError(res, 401);
     }
 
-    if ( writerBody.image && currentWriter.image ) {
-      await deleteCloudinaryImage("bastion/writers/", currentWriter.image);
-    } 
-    
-    writerBody.image = await sendCloudinaryImage(writerBody.image, "bastion/writers");
+    if ( writerBody.image!==currentWriter.image ) {
+      if ( writerBody.image && currentWriter.image ) {
+        await deleteCloudinaryImage("bastion/writers/", currentWriter.image);
+      } 
+      
+      writerBody.image = await sendCloudinaryImage(writerBody.image, "bastion/writers");
+    }
+
     
     await updateWriter({ email: currentWriter.email}, writerBody);
 
     return clientSuccess(res, 200, "Account successfully updated.");
   } catch(error) {
+    return validateError(error, 400, res);
+  }
+}
+
+export const getCurrentWriterHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  try {
+    // check for student or writer
+    const session = await getSession({ req });
+
+    if ( !session?.user ) {
+      return clientError(res, 401);
+    }
+    
+    if ( session.user.userType==="writer" ) {
+      const serviceOptions = {
+        query: {
+          username: session.user.username
+        },
+        projection: "-_id -email -password -writings -collaborations",
+        populate: {
+          path: "likes followings",
+          select: "-_id -title -content -image -type -likes -author -collaborators -email -password -writerId -writings -collaborations -likes -followings",
+        }
+      }
+
+      const currentWriter = await findWriter(
+        serviceOptions.query,
+        serviceOptions.projection,
+        serviceOptions.populate
+      );
+
+      if ( !currentWriter ) {
+        return clientError(res, 404, "No user found. Please login properly.");
+      }
+
+      return clientSuccess(res, 200, currentWriter);
+    }
+  } catch( error ) {
     return validateError(error, 400, res);
   }
 }

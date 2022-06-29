@@ -12,14 +12,16 @@ import { ArticleList } from "./list";
 
 interface ArticlesProps {
   children?: React.ReactNode,
-  articles: ArticleData[] | DividedArticles[]
+  articles: ArticleData[] | DividedArticles[],
+  owned?: boolean
 }
 
 const Articles = ( {
   children,
-  articles
+  articles,
+  owned=false
 }: ArticlesProps ) =>{
-
+  
   return (
     <>
       { articles.length!==0 && (
@@ -29,10 +31,16 @@ const Articles = ( {
               <GenreContainer>
                 <GenreHeading>{ readings.genre }</GenreHeading>
               </GenreContainer>
-              <ArticleList articles={ readings.readings.reverse() } />
+              <ArticleList 
+                articles={ [...readings.readings].reverse() }
+                owned={ owned } />
             </ContentContainer>
           )) }
-          { !isDividedArticles(articles) && <ArticleList articles={ articles } /> }
+          { !isDividedArticles(articles) && (
+            <ArticleList 
+              articles={ [...articles].reverse() }
+              owned={ owned } />
+          ) }
           { children }
         </Wrapper>
       ) }
