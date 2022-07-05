@@ -21,8 +21,7 @@ import { MainButton, Relative, TextMedium } from "@/styled/shared/collection";
 import { SignUpModal } from "@/components/modal/signup";
 import { 
   signIn, 
-  signOut,
-  useSession } from "next-auth/react";
+  signOut } from "next-auth/react";
 import { useTrackedState } from "@/store/tracked";
 import { useRouter } from "next/router";
 import { PublishControls } from "./publish";
@@ -41,7 +40,6 @@ const Header = () => {
     data,
     writer
    } = useCurrentWriter();
-  const { writing } = useTrackedState();
   const currentPath = useRouter().pathname;
 
   useEffect(() =>{
@@ -105,7 +103,7 @@ const Header = () => {
           <Relative>
             <button onClick={ handleUserExpansion }>
               <UserImage
-                src={  data.user.image? data.user.image : "/icons/default-avatar.svg" }
+                src={ data.user.userType==="writer" && writer?.image? writer?.image : "/icons/default-avatar.svg" }
                 alt={ `${ data.user.firstName } ${ data.user.lastName }` }  />
             </button>
             { userExpanded && <>
@@ -116,7 +114,7 @@ const Header = () => {
                     passHref>
                       <UserProfile>
                         <UserImage
-                          src={ data.user.image? data.user.image : "/icons/default-avatar.svg" }
+                          src={ writer.image?? "/icons/default-avatar.svg" }
                           alt={ `${ data.user.firstName } ${ data.user.lastName }` }  />
                         <div>
                           <UserName>{ `${ data.user.firstName }  ${ data.user.lastName }` }</UserName>
@@ -128,7 +126,7 @@ const Header = () => {
                 { !writer && (
                   <UserProfile as="div">
                     <UserImage
-                      src={ data.user.image? data.user.image : "/icons/default-avatar.svg" }
+                      src="/icons/default-avatar.svg"
                       alt={ `${ data.user.firstName } ${ data.user.lastName }` }  />
                     <div>
                       <UserName>{ `${ data.user.firstName }  ${ data.user.lastName }` }</UserName>

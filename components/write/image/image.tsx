@@ -26,6 +26,7 @@ const Image = () =>{
           const ctx = canvas.getContext("2d");
           ctx?.drawImage(img, 0, 0, 826, 416);
           const url = canvas.toDataURL(imageFile.type);
+          console.log(url);
           dispatch({
             type: "SAVE_WRITING",
             field: "image",

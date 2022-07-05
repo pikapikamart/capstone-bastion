@@ -64,9 +64,9 @@ const NextProviders = [
           user.lastName = userExistence.lastName;
           user.username = userExistence.username;
 
-          if ( isWriter(userExistence) ) {
-            user.image = userExistence.image;
-          }
+          // if ( isWriter(userExistence) ) {
+          //   user.image = userExistence.image;
+          // }
 
           return user;
         }

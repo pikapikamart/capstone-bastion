@@ -21,6 +21,7 @@ import { useCurrentWriter } from "@/lib/hooks";
 import { MainButton } from "@/styled/shared/collection";
 import { addErrors, removeErrors, validateInput } from "@/lib/utils";
 import { useDispatch } from "@/store/tracked";
+import { useRouter } from "next/router";
 
 
 interface UpdateProps {
@@ -46,6 +47,7 @@ const Update = ( { handleUpdate }: UpdateProps ) =>{
   const inputFields = useRef<HTMLInputElement[]>([]);
   const { writer } = useCurrentWriter();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleFormSubmit = ( event: React.FormEvent<HTMLFormElement> ) => {
     event.preventDefault();
@@ -114,6 +116,7 @@ const Update = ( { handleUpdate }: UpdateProps ) =>{
             payload: updateInformation
           });
           handleUpdate();
+          router.reload();
         }
       }
 

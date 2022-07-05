@@ -10,13 +10,34 @@ import {
   InferGetStaticPropsType, 
   NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
+import { useEffect, useState } from "react";
 
 
-const Article: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ( { article } ) => {
+const Article: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ( { searchId } ) => {
+  const [ article, setArticle ] = useState<ArticleData | null>(null);
+
+  useEffect(() =>{
+    const getArticle = async() =>{
+      const result = await fetch("/api/article/" + searchId);
+      const resultJSON = await result.json();
+
+      if ( result.ok ) {
+        setArticle(resultJSON.data);
+      }
+    }
+
+    getArticle();
+  }, [])
+
+  if ( article ) {
+    return (
+      <ArticlePage article={ article } />
+    );
+  }
 
   return (
-    <ArticlePage article={ article } />
-  );
+    <div></div>
+  )
 }
 
 export default Article;
@@ -64,15 +85,16 @@ export const getStaticProps = async( context: GetStaticPropsContext ) =>{
       select: "-_id -email -password -writerId -writings"
     }
   }
-  const foundArticle = await findArticle(
-    serviceOptions.query,
-    serviceOptions.projection,
-    serviceOptions.populate
-  );
+  // const foundArticle = await findArticle(
+  //   serviceOptions.query,
+  //   serviceOptions.projection,
+  //   serviceOptions.populate
+  // );
 
   return {
     props: {
-      article: JSON.parse(JSON.stringify(foundArticle)) as ArticleData
+      searchId
+      // article: JSON.parse(JSON.stringify(foundArticle)) as ArticleData
     }
   }
 }

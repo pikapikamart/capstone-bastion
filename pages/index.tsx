@@ -5,7 +5,7 @@ import {
 import { 
   getSession, 
   useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { RootPage } from "@/page-components/root";
 import { DividedArticles } from "@/store/tracked";
@@ -21,7 +21,8 @@ type RootPageT<T> = NextPage<T> & {
   getLayout: ( page: React.ReactElement ) => React.ReactNode
 }
 
-const Root: RootPageT<InferGetServerSidePropsType<typeof getServerSideProps>> = ( { articles } ) =>{
+const Root: RootPageT<InferGetServerSidePropsType<typeof getServerSideProps>> = ( { } ) =>{
+  const [ articles, setArticles ] = useState<DividedArticles[]>([]);
   const { data } = useSession();
   const router = useRouter();
 
@@ -31,6 +32,19 @@ const Root: RootPageT<InferGetServerSidePropsType<typeof getServerSideProps>> = 
     }
   }, [])
 
+  useEffect(() =>{
+    const getArticles = async() =>{
+      const result = await fetch("/api/articles");
+      const resultJSON = await result.json();
+
+      if ( result.ok ) {
+        setArticles(resultJSON.data);
+      }
+    }
+
+    getArticles();
+  }, [])
+
   if ( data ) {
     return (
       <div></div>
@@ -38,7 +52,7 @@ const Root: RootPageT<InferGetServerSidePropsType<typeof getServerSideProps>> = 
   }
 
   return (
-    <RootPage articles={ articles } />
+    <RootPage articles={ articles.reverse() } />
   )
 }
 
@@ -60,12 +74,12 @@ export const getServerSideProps = async ( context: GetServerSidePropsContext ) =
     projection,
     populate
   } = articlesServiceOptions.signedOut;
-  const foundArticles = await findSlicedReadings(projection, populate);
+  // const foundArticles = await findSlicedReadings(projection, populate);
   const session = await getSession(context);
 
   return {
     props: {
-      articles: JSON.parse(JSON.stringify(foundArticles)) as DividedArticles[],
+      // articles: JSON.parse(JSON.stringify(foundArticles)) as DividedArticles[],
       session
     }
   }

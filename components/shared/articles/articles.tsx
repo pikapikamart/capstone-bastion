@@ -38,7 +38,7 @@ const Articles = ( {
           )) }
           { !isDividedArticles(articles) && (
             <ArticleList 
-              articles={ [...articles].reverse() }
+              articles={ articles }
               owned={ owned } />
           ) }
           { children }

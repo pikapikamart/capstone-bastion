@@ -10,13 +10,34 @@ import { findAllWriters } from "@/api-lib/service/writers.service";
 import { Writer as WriterT } from "@/store/tracked";
 import { ParsedUrlQuery } from "querystring";
 import { WriterPage } from "@/page-components/writer";
+import { useEffect, useState } from "react";
 
 
-const Writer: NextPage<InferGetServerSidePropsType<typeof getStaticProps>> = ( { writer } ) => {
+const Writer: NextPage<InferGetServerSidePropsType<typeof getStaticProps>> = ( { username } ) => {
+  const [ writer, setWriter ] = useState<WriterT | null>(null)
+
+  useEffect(() =>{
+    const getWriter = async() =>{
+      const result = await fetch("/api/user/writer/" + username);
+      const resultJSON = await result.json();
+
+      if ( result.ok ) {
+        setWriter(resultJSON.data);
+      }
+    }
+
+    getWriter();
+  }, [])
+
+  if ( writer ) {
+    return (
+      <WriterPage writer={ writer } />
+    );
+  }
 
   return (
-    <WriterPage writer={ writer } />
-  );
+    <div></div>
+  )
 }
 
 interface Params {
@@ -51,21 +72,22 @@ interface UsernameParams extends ParsedUrlQuery {
 export const getStaticProps = async ( context: GetStaticPropsContext ) =>{
   await connectDatabase();
   const { username } = context.params as UsernameParams;
-  const serviceOptions = {
-    ...writerServiceOptions,
-    query: {
-      username
-    }
-  }
-  const foundWriter = await findWriter(
-    serviceOptions.query,
-    serviceOptions.projection,
-    serviceOptions.populate
-  )
+  // const serviceOptions = {
+  //   ...writerServiceOptions,
+  //   query: {
+  //     username
+  //   }
+  // }
+  // const foundWriter = await findWriter(
+  //   serviceOptions.query,
+  //   serviceOptions.projection,
+  //   serviceOptions.populate
+  // )
 
   return {
     props: {
-      writer: JSON.parse(JSON.stringify(foundWriter)) as WriterT
+      username,
+      // writer: JSON.parse(JSON.stringify(foundWriter)) as WriterT
     }
   }
 }
